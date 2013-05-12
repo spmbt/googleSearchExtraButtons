@@ -14,3 +14,4 @@
 * искать за последний месяц;
 * искать за последний год;
 
+Основано на статье BarsMonster http://webcache.googleusercontent.com/search?q=cache:http://habrahabr.ru/post/179367/ .
