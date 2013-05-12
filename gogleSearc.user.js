@@ -66,6 +66,7 @@ new Tout({t:120, i:8, m: 1.6
 			,buttSearch = document.getElementsByName("btnG") && document.getElementsByName("btnG")[0]
 			,buttS =[
 				['PDF','filetype:pdf']
+				//,['S',site:yoursite.com'] //write your site name and uncomment
 				,['1D','&tbs=qdr:d']
 				,['7D','&tbs=qdr:w']
 				,['1M','&tbs=qdr:m']
@@ -80,7 +81,7 @@ new Tout({t:120, i:8, m: 1.6
 						,at:{value: bI[0]
 							,innerHTML: bI[0]}
 						,cs:{position:'absolute', top:'33px', left: (-82 + 60*j++) +'px', opacity: 0.74}
-						,on:{click: (function(bI){return bI[0] =='PDF'? function(ev){
+						,on:{click: (function(bI){return bI[0] =='PDF'|| /^site:/.test(bI[1]) ? function(ev){
 							inputSearch.value +=' '+ bI[1];
 						}:function(ev){
 							location.href ='/search?q='+ encodeURIComponent(inputSearch.value) + bI[1];
