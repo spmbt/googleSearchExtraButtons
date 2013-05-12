@@ -15,3 +15,6 @@
 * искать за последний год;
 
 Основано на статье BarsMonster http://webcache.googleusercontent.com/search?q=cache:http://habrahabr.ru/post/179367/ .
+
+Вид:
+![Скриншот поиска с дополнительными кнопками](http://imageshack.us/a/img42/462/goglesearc01.png)
