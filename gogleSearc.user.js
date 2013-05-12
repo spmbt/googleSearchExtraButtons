@@ -43,7 +43,7 @@ var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===ex
 				else o.setAttribute(i, at[i]);}
 		if(g.atRemove)
 			for(var i in g.atRemove)
-				o.removeAttribute(i, g.atRemove[i]);
+				o.removeAttribute(g.atRemove[i]);
 		if(g.htT){ //подготовка шаблона
 			for(var i in g)
 				g.htT = g.htT.replace(RegExp('\\{\\{'+ i +'\\}\\}','g'), g[i])
@@ -114,7 +114,7 @@ new Tout({t:120, i:8, m: 1.6
 						,atRemove:['id','name']
 						,at:{value: bI[0]
 							,innerHTML: bI[0]}
-						,cs:{position:'absolute', top: (36 + 32*j++) +'px', left:'0px', opacity: 0.74}
+						,cs:{position:'absolute', top:'33px', left: (-82 + 60*j++) +'px', opacity: 0.74}
 						,on:{click: (function(bI){return bI[0] =='PDF'? function(ev){
 							inputSearch.value +=' '+ bI[1];
 						}:function(ev){

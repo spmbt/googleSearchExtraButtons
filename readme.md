@@ -17,4 +17,4 @@
 Основано на статье BarsMonster http://webcache.googleusercontent.com/search?q=cache:http://habrahabr.ru/post/179367/ .
 
 Вид:
-![Скриншот поиска с дополнительными кнопками](http://imageshack.us/a/img42/462/goglesearc01.png)
+![Скриншот поиска с дополнительными кнопками](http://imageshack.us/a/img15/462/goglesearc01.png)
