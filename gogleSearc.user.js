@@ -6,7 +6,7 @@
 // @include	   https://www.google.*/*
 // ==/UserScript== 
 
-(function(){
+(function(lang){
 
 var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===extend===
 	,$pd = function(ev){ev.preventDefault();}
@@ -56,7 +56,9 @@ var Tout = function(h){
 		else if(h.i-- >0) //next slower step
 			th.ww = setTimeout(arguments.callee, (h.t *= h.m) );
 	})();
-};
+},
+lNull = lang ==null, //если lang == null или undefined - нет подсказок
+lang = lang =='ru'|| !(lang && lang.length && lang.length >1); //подсказки на русском/англ.
 new Tout({t:120, i:8, m: 1.6
 	,check: function(){
 		return document && document.getElementsByName("q") && document.getElementsByName("q")[0];
@@ -65,12 +67,12 @@ new Tout({t:120, i:8, m: 1.6
 		var inputSearch = this.dat
 			,buttSearch = document.getElementsByName("btnG") && document.getElementsByName("btnG")[0]
 			,buttS =[
-				['PDF','filetype:pdf']
-				//,['S',site:yoursite.com'] //write your site name and uncomment
-				,['1D','&tbs=qdr:d']
-				,['7D','&tbs=qdr:w']
-				,['1M','&tbs=qdr:m']
-				,['1Y','&tbs=qdr:y']
+				['PDF','filetype:pdf',lang?'поиск по документам PDF':lNull?'':'search in PDF files']
+				//,['S','site:yoursite.com',lang?'искать по сайту yoursite.com':lNull?'':'search in yoursite.com'] //write your site name and uncomment
+				,['1D','&tbs=qdr:d',lang?'за последние сутки':lNull?'':'last day']
+				,['7D','&tbs=qdr:w',lang?'за последнюю неделю':lNull?'':'last week']
+				,['1M','&tbs=qdr:m',lang?'за последний месяц':lNull?'':'last month']
+				,['1Y','&tbs=qdr:y',lang?'за последний год':lNull?'':'last year']
 			], j =0;
 		buttSearch.parentNode.style.position ='relative';
 		if(buttSearch)
@@ -79,7 +81,8 @@ new Tout({t:120, i:8, m: 1.6
 					,butt2 = $e({clone: buttSearch
 						,atRemove:['id','name']
 						,at:{value: bI[0]
-							,innerHTML: bI[0]}
+							,innerHTML: bI[0]
+							,title: bI[2]}
 						,cs:{position:'absolute', top:'33px', left: (-82 + 60*j++) +'px', opacity: 0.74}
 						,on:{click: (function(bI){return bI[0] =='PDF'|| /^site:/.test(bI[1]) ? function(ev){
 							inputSearch.value +=' '+ bI[1];
@@ -92,4 +95,4 @@ new Tout({t:120, i:8, m: 1.6
 	}
 });
 
-})();
+})('ru'); //remove for no hints; write 'en' fo English hints
