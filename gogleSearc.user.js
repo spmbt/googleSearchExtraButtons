@@ -75,7 +75,7 @@ new Tout({t:120, i:8, m: 1.6
 				,['1Y','&tbs=qdr:y',lang?'за последний год':lNull?'':'last year']
 			], j =0;
 		buttSearch.parentNode.style.position ='relative';
-		if(buttSearch)
+		if(buttSearch && top == self)
 			for(var i in buttS)
 				var bI = buttS[i]
 					,butt2 = $e({clone: buttSearch
