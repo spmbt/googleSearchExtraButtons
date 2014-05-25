@@ -1,9 +1,9 @@
-﻿// ==UserScript==
-// @name		  GoogleSearchExtraButtons
-// @version	   1.12
-// @namespace	 barsmonster, spmbt
-// @include	   http://www.google.*/*
-// @include	   https://www.google.*/*
+// ==UserScript==
+// @name        GoogleSearchExtraButtons
+// @version     1.2
+// @namespace   barsmonster, spmbt
+// @include     http://www.google.*/*
+// @include     https://www.google.*/*
 // ==/UserScript== 
 
 (function(lang){
@@ -83,7 +83,8 @@ new Tout({t:120, i:8, m: 1.6
 						,at:{value: bI[0]
 							,innerHTML: bI[0]
 							,title: bI[2]}
-						,cs:{position:'absolute', top:'33px', left: (-82 + 60*j++) +'px', opacity: 0.74, lineHeight:'14px', height:'16px'}
+						,cs:{position:'absolute', top:'33px', left: (-82 + 60*j++) +'px', opacity: 0.64, lineHeight:'14px', height:'16px'
+						,border:'1px solid rgba(0, 0, 0, 0)', backgroundColor:'#4485f5', color:'#fff'}
 						,on:{click: (function(bI){return bI[0] =='PDF'|| /^site:/.test(bI[1]) ? function(ev){
 							inputSearch.value +=' '+ bI[1];
 						}:function(ev){
@@ -92,6 +93,7 @@ new Tout({t:120, i:8, m: 1.6
 						}})(bI) }
 						,apT: buttSearch.parentNode
 					});
+		$e({el:document.querySelector('.gb_Ib > .gb_e'),cs:{height:'47px'}} );
 	}
 });
 
