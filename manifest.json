@@ -1,0 +1,16 @@
+{
+	"content_scripts": [ {
+		"exclude_matches": [  ],
+		"include_globs": [
+			"http://www.google.*/*"
+			,"https://www.google.*/*"],
+		"js": [ "googleSearc.user.js" ],
+		"matches": [ "http://*/*", "https://*/*" ],
+		"run_at": "document_idle"
+	} ],
+	"converted_from_user_script": true,
+	"description": "Add buttons (last day, last week, PDF search etc.) to results of search page of Google",
+	"name": "GoogleSearchExtraButtons",
+	"version": "3.2015.2.18",
+	"manifest_version": 2
+}
