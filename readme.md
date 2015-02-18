@@ -25,6 +25,10 @@ Script adds 5 buttons that doubled links hidden in:
 
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
-Screenshot:
+Screenshots:
 
 ![Search with extra buttons](https://greasyfork.org/system/screenshots/screenshots/000/000/015/original/googleSearchExtraButtons-20150118-031446.png?14215417344)
+
+![List for search in sites](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-white.png)
+
+![List for search in sites in dark header style of page](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-dark.png)

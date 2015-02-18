@@ -22,3 +22,8 @@
 * впишите в код список ваших сайтов для поиска (например, ['slashdot.org','digg.com']). 
 
 Основано на [статье BarsMonster](http://habrahabr.ru/post/179367/) .
+
+
+![Для поиска по сайту](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-white.png)
+
+![Список для поиска по сайту в тёмном дизайне заголовка](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-dark.png)
