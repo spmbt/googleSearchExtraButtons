@@ -102,8 +102,8 @@ new Tout({t:120, i:8, m: 1.6
 							,innerHTML: i
 							,title: bI[1]}
 						,cs: $x({position:'absolute', top:'33px', left: (-82 + 60*j++) +'px'}, buttCss)
-						,on:{click: (function(bI,i){return i =='PDF'|| /^site:/.test(bI[0]) ? function(ev){
-							inputSearch.value = inputSearch.value.replace(/site\:[\w.]+$/i,'') +' '+ (ev.target.className=='siteList'? bI[0] : 'site:'+ ev.target.getAttribute('site'));
+						,on:{click: (function(bI,i){return i=='PDF' || /^site:/.test(bI[0]) ? function(ev){
+							inputSearch.value = inputSearch.value.replace(/ site\:[\w.]+$/i,'').replace(' filetype:pdf','') +' '+ (i=='PDF'? bI[0] : 'site:'+ ev.target.getAttribute('site'));
 							if(ev.target.className=='siteList') this.form.click();
 						}:function(ev){
 							location.href ='/search?q='+ encodeURIComponent(inputSearch.value) + bI[0];
