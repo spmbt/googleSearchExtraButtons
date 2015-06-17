@@ -132,7 +132,7 @@ new Tout({t:120, i:8, m: 1.6
 		$e({el:d.querySelector('.gb_Fb'),cs:{zIndex:'1087'}} );
 		$e({el:d.querySelector('.tsf-p'),cs:{zIndex:'203'}} );
 	}
-});
+});;
 
 })('en' //write '' to remove hints; 'en' for English hints, 'ru' for Russian
 	,['slashdot.org','engadget.com','techcrunch.com','habrahabr.ru','geektimes.ru','smashingmagazine.com','maketecheasier.com']); //write your favorite sites
