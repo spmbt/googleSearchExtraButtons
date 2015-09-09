@@ -9,8 +9,8 @@
 		"run_at": "document_idle"
 	} ],
 	"converted_from_user_script": true,
-	"description": "Add buttons (last day, last week, PDF search etc.) to results of search page of Google",
+	"description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) to results of search page of Google",
 	"name": "GoogleSearchExtraButtons",
-	"version": "3.2015.2.18",
+	"version": "5.2015.9.9",
 	"manifest_version": 2
 }
