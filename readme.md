@@ -12,17 +12,19 @@ Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en
 * Opera 12- - save userscript in file placed in Opera directory... ( there are instructions );
 * Safari - installed by NinjaKit (not checked, but no complexity in script).
 
-Script adds 11 buttons that doubled links hidden in:
+Script adds 8 types of buttons that doubled links hidden in:
 
 * search PDF docs;
+* search in site (from list; if no list in settings (or commented), this button is not displayed);
+* write list of your favorite sites in code (example: ['slashdot.org','digg.com']);
 * search in interval of dates (fast opening of Google inteface);
-* search for 1/2/3 last days;
-* search for 1/2/3 last weeks;
-* search for last month;
-* search for last year;
-* if uncomment line beginning "site:" in code, it will present button of search by some site or list of sites;
-* in last string: ('ru'); //remove for no hints; write 'en' for English hints;
-* write list of your favorite sites in code (example: ['slashdot.org','digg.com']), and it give to show button "site".
+* search for 1,2..13 last days;
+* search for 1,2..10 last weeks;
+* search for 1,2..11 last months;
+* search for 1,2..10 last years;
+* search for 1,2..22 last hours;
+* multilanguage interface by settings in navigator.language or in script: ('en' is default or on undescribed language);
+* remove lang in settings for no hints (interface language will be English).
 
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
