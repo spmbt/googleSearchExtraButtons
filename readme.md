@@ -10,7 +10,7 @@ Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en
 * Fx - script installed by Scriptish/GreaseMonkey (addons for userscripts);
 * Chrome - immediately (on the page chrome://extensions/ it placed as unpacked script in "developer mode"; directory sholuld be contain manifest.json; or by other methods);
 * Opera 12- - save userscript in file placed in Opera directory... ( there are instructions );
-* Safari - installed by NinjaKit (not checked, but no complexity in script).
+* Safari - installed by Tampermonkey for Safari.
 
 Script adds 8 types of buttons that doubled links hidden in:
 

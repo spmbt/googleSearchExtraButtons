@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     5.2015.10.15
+// @version     7.2015.10.15
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -288,7 +288,7 @@
 	});
 
 })({ //write "lang:''," to remove hints; 'en' for English hints (fr - Français, es - espagnol), 'ru' for Russian
-	lang: ''|| (navigator.languages[1] || navigator.language)
+	lang: ''|| (navigator.languages && navigator.languages[1] || navigator.language)
 	,sites:['slashdot.org','engadget.com','techcrunch.com','habrahabr.ru','geektimes.ru'
 		,'smashingmagazine.com','maketecheasier.com'] //write your favorite sites
 	,lastHoursLess:1 // not show odd hours after 8 h.
