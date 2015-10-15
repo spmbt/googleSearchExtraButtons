@@ -1,16 +1,16 @@
 {
-	"content_scripts": [ {
-		"exclude_matches": [  ],
-		"include_globs": [
-			"http://www.google.*/*"
-			,"https://www.google.*/*"],
-		"js": [ "googleSearc.user.js" ],
-		"matches": [ "http://*/*", "https://*/*" ],
-		"run_at": "document_idle"
-	} ],
-	"converted_from_user_script": true,
-	"description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page",
-	"name": "GoogleSearchExtraButtons",
-	"version": "6.2015.10.14",
-	"manifest_version": 2
+  "content_scripts": [ {
+	"exclude_matches": [  ],
+	"include_globs": [
+	  "http://www.google.*/search*"
+	,"https://www.google.*/search*"],
+	"js": [ "Google_Search_Extra_Buttons.user.js" ],
+	"matches": [ "http://*/*", "https://*/*" ],
+	"run_at": "document_idle"
+  } ],
+  "converted_from_user_script": true,
+  "description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page",
+  "name": "GoogleSearchExtraButtons",
+  "version": "6.2015.10.14",
+  "manifest_version": 2
 }

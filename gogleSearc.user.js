@@ -5,8 +5,8 @@
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
 // @version     5.2015.10.14
 // @namespace   spmbt.github.com
-// @include     http://www.google.*/*
-// @include     https://www.google.*/*
+// @include     http://www.google.*/search*
+// @include     https://www.google.*/search*
 // ==/UserScript==
 
 (function(sett){ //lang, sites, lastHoursLess
