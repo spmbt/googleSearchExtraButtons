@@ -209,7 +209,7 @@ new Tout({t:120, i:8, m: 1.6
 						,at: {value: i, innerHTML: i, title: lang || i=='site'|| i=='.. : ..' ? bI.txt :''}
 						,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * ii++) +'px'}
 						,on: {click: (function(bI, i){
-							//console.log('clic:',i,bI)
+							console.log('clic:',i,bI)
 							return /PDF|site/.test(i)
 								? function(ev){
 									if(!ev.target.getAttribute('site') || ev.target.getAttribute('site')==$LSettings) return;
@@ -260,7 +260,7 @@ new Tout({t:120, i:8, m: 1.6
 									? $e({cl: 'sett lsb'})
 									: buttSearch
 								,clAdd:'xButt'
-								,atRemove:['id','name','date']
+								,atRemove:['id','name']
 								,at:{value: sI
 									,site: sI
 									,date: bI.url
