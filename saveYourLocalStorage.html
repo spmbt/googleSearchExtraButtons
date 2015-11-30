@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><meta charset="UTF-8"><title>localStorage saving</title>
+	<script>
+		var listen = window.addEventListener;
+		(listen||window.attachEvent)((listen ?'':'on') +'message', function(ev){
+			var d = ev.data
+				,tok = d.tok
+				,key = d.key;
+			switch(d.do){
+				case 'set':
+					if(localStorage)
+                        localStorage[key] = JSON.stringify(d.val); break;
+				case 'get':
+                    var h = localStorage && JSON.parse(localStorage[key]); break;
+				case 'remove': localStorage && localStorage.removeItem(key);
+			}
+            console.log('[io2]', d, tok);
+			ev.source.postMessage(JSON.stringify(h ? {tok: tok, h: h}:{tok: tok}), ev.origin);
+		},!1);
+	</script>
+</head>
+<body>
+	This page supports saving of localStorage (on the domain github.io) for sites which erase it on its own domain (such as google.*, facebook.com etc.).
+</body>
+</html>
