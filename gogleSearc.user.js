@@ -3,11 +3,13 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     10.2015.11.30
+// @version     12.2015.12.1
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
+// @include     https://www.google.*/*
 // @include     https://encrypted.google.*/search*
+// @include     https://encrypted.google.*/*
 // @include     https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html
 // ==/UserScript==
 if(location.host=='spmbt.github.io'){
@@ -254,16 +256,16 @@ var Tout = function(h){
 	}}; //if !lang, then no hints
 addRules('.siteList:hover button{display: block}'
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
-	+'.lsbb .xButt,.lsbb >.siteList{opacity: 0.64; line-height:14px; width:34px; height:17px; padding:0 2px;'
-	+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff}'
+	+'.lsbb .xButt,.lsbb >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
+		+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff; opacity: 0.64}'
 	+'.lsbb >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
 	+'.lsbb >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover{opacity: 1; color:#fff}'
 	+'.siteList .sett .txt{padding: 0 2px}'
 	+'.siteList .settIn{display: none; width: 250px; padding: 2px 4px; text-align:left; border:1px solid #48f;'
-	+'background-color:#eef; color:#336}'
+		+'background-color:#eef; color:#336}'
 	+'.siteList .settIn hr{margin:2px 0}'
-	+'.siteList .sett:hover .settIn, .siteList .settIn.changed{display: block}'
-	+'.siteList .settIn .reload{display: none}.siteList .settIn.changed .reload{display: block}');
+	+'.sbibtd .sfsbc, .sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
+		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}');
 var S ={}, settsLength =0; for(var i in setts) settsLength++;
 for(var i in setts)
 	{S[i] = setts[i]; settsLength--;}
@@ -271,7 +273,7 @@ for(var i in setts)
 
 new Tout({t:120, i:8, m: 1.6
 	,check: function(){
-		return /*!settsLength &&*/ d && d.getElementsByName("q") && d.getElementsByName('q')[0];
+		return /*!settsLength &&*/ d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
 	occur: function(){
 		//alert(11)
@@ -288,7 +290,8 @@ new Tout({t:120, i:8, m: 1.6
 				$L[l] = l;
 		}
 		if(sites.length)
-			sites.push($LSettings = $L['Settings']);
+			sites.push($LSettings = $L['Settings'])
+			,mainPg = /\/search\?/.test(location.href);
 		var inputSearch = this.dat
 				,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0]
 			,buttS ={
@@ -308,11 +311,12 @@ new Tout({t:120, i:8, m: 1.6
 			var bI = buttS[i]
 				, butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: sites[0], date: bI.url} })
-						: buttSearch
+						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
 					,clAdd:'xButt'
 					,atRemove: ['id', 'name']
-					,at: {value: i, innerHTML: '<span class=txt title="'+(lang || i=='site'|| i=='.. : ..' ? bI.txt :'')+'">'+ i +'</span>'}
-					,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * ii++) +'px'}
+					,at: {value: i, innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="'
+						+(lang || i=='site'|| i=='.. : ..' ? bI.txt :'')+'">'+ i +'</span>'}
+					,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * (ii++ - (ii >2 && !mainPg))) +'px'}
 					,on: {click: (function(bI, i){
 						//console.log('clic:',i,bI)
 						return /PDF|site/.test(i)

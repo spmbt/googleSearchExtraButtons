@@ -1,18 +1,20 @@
 {
   "content_scripts": [ {
-    "exclude_matches": [  ],
-    "include_globs": [
-      "http://www.google.*/search*"
-    ,"https://www.google.*/search*"
-    ,"https://encrypted.google.*/search*"
-    ,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"],
-    "js": [ "Google_Search_Extra_Buttons.user.js" ],
-    "matches": [ "http://*/*", "https://*/*" ],
-    "run_at": "document_idle"
+	"exclude_matches": [  ],
+	"include_globs": [
+	  "http://www.google.*/search*"
+	,"https://www.google.*/search*"
+	,"https://www.google.*/*"
+	,"https://encrypted.google.*/search*"
+	,"https://encrypted.google.*/*"
+	,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"],
+	"js": [ "Google_Search_Extra_Buttons.user.js" ],
+	"matches": [ "http://*/*", "https://*/*" ],
+	"run_at": "document_idle"
   } ],
   "converted_from_user_script": true,
   "description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page",
   "name": "GoogleSearchExtraButtons",
-  "version": "10.2015.11.30",
+  "version": "11.2015.12.1",
   "manifest_version": 2
 }
