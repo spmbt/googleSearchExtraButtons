@@ -5,18 +5,22 @@
 		var listen = window.addEventListener;
 		(listen||window.attachEvent)((listen ?'':'on') +'message', function(ev){
 			var d = JSON.parse(ev.data)
-				,tok = d.tok
-				,key = d.key;
+					,tok = d.tok
+					,key = d.key, ns ='googXButtons_';
 			switch(d.do){
 				case 'set':
-					if(localStorage)
-                        localStorage[key] = JSON.stringify(d.val); break;
+					var prev = localStorage[ns + key];
+					localStorage[ns + key] = JSON.stringify(d.val); break;
 				case 'get':
-                    var h = localStorage && JSON.parse(localStorage[key]); break;
-				case 'remove': localStorage && localStorage.removeItem(key);
+					prev = localStorage[ns + key];
+					prev = prev !== undefined ? JSON.parse(prev) : prev; break;
+				case 'remove':
+					prev = localStorage[ns + key];
+					if(prev !==undefined)
+						localStorage.removeItem(ns + key);
 			}
-            console.log('[io2]', d, tok);
-			ev.source.postMessage(JSON.stringify(h ? {tok: tok, h: h}:{tok: tok}), ev.origin);
+			console.log('[io2]', tok, 'prev=', prev);
+			ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
 		},!1);
 	</script>
 </head>

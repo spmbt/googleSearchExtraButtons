@@ -15,19 +15,23 @@
 if(location.host=='spmbt.github.io'){
 	window.addEventListener('message', function(ev){
 		if(/^https?:\/\/www\.google\./.test(ev.origin)){
-			var d = JSON.parse(ev.data), tok = d.tok, key = d.key;
+			var d = JSON.parse(ev.data), tok = d.tok, key = d.key, ns ='googXButtons_';
 			switch(d.do){
 				case 'set':
-					localStorage[key] = JSON.stringify(d.val);
+					var prev = localStorage[ns + key];
+					localStorage[ns + key] = JSON.stringify(d.val);
 					break;
 				case 'get':
-					var h = JSON.parse(localStorage[key]);
+					prev = localStorage[ns + key];
+					prev = prev !== undefined ? JSON.parse(prev) : prev;
 					break;
 				case 'remove':
-					localStorage.removeItem(key);
+					prev = localStorage[ns + key];
+					if(prev !==undefined)
+						localStorage.removeItem(ns + key);
 			}
-			console.log('[io]', d, tok);
-			ev.source.postMessage(JSON.stringify(h ? {tok: tok, h: h} : {tok: tok}), ev.origin);
+			console.log('[io]', tok, 'prev=', prev);
+			ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
 		}},!1);
 }else
 
@@ -152,12 +156,12 @@ var Tout = function(h){
 		});
 		if(!listenMsg) addEventListener('message', function(ev){
 			if(ev.origin == xLocStorOrigin){    // {"tok":"<value>"[,"err":"<txt>"],"h":...}
-				console.log('from_io', JSON.parse(ev.data))
+				console.log('from_io', JSON.parse(ev.data), ev)
 				var resp = ev.data && ev.data[0] =='{' && JSON.parse(ev.data);
 				if(!resp) xCatch('bad_format', resp, h);
 				if(( qr = qrs[resp.tok] )){
 					qrI -= 1;
-					qr.cB(resp.h);
+					qr.cB(resp.prev, resp);
 					var er = qr.err;
 					delete qrs[resp.tok];} // else ignore unsufficient token
 				if(resp.err && (!er || er(resp.err)) ) //individual or common error processing depends of er()
@@ -306,7 +310,7 @@ new Tout({t:120, i:8, m: 1.6
 			}, ii =0;
 		!sites && delete buttS.site;
 		buttSearch.parentNode.style.position ='relative';
-		//xLocStor({do:'get', key:'aaa', val:{}, cB: function(dat){console.info(112, dat);}, el: buttSearch.parentNode});
+		xLocStor({do:'set', key:'aaa', val:{12:31}, cB: function(prev,undef){console.info(112, prev, undef);}, el: buttSearch.parentNode});
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
 			var bI = buttS[i]
 				, butt2 = $e({clone: i =='site'|| i.length ==2
