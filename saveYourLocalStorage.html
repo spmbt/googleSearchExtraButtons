@@ -13,7 +13,7 @@
 					localStorage[ns + key] = JSON.stringify(d.val); break;
 				case 'get':
 					prev = localStorage[ns + key];
-					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev);
+					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev); break
 				case 'remove':
 					prev = localStorage[ns + key];
 					if(prev !==undefined)
