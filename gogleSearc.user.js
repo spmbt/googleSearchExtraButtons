@@ -15,23 +15,28 @@
 if(location.host=='spmbt.github.io'){
 	window.addEventListener('message', function(ev){
 		if(/^https?:\/\/www\.google\./.test(ev.origin)){
-			var d = JSON.parse(ev.data), tok = d.tok, key = d.key, ns ='googXButtons_';
+			var d = typeof ev.data =='string' && ev.data[0] =='{' ? JSON.parse(ev.data) : ev.data;
+			if(!d.do) return;
+			var tok = d.tok, key = d.key;
 			switch(d.do){
 				case 'set':
-					var prev = localStorage[ns + key];
-					localStorage[ns + key] = JSON.stringify(d.val);
+					var prev = localStorage[key];
+					if(d.val !==undefined)
+						localStorage[key] = JSON.stringify(d.val);
+					else
+						localStorage.removeItem(key);
 					break;
 				case 'get':
-					prev = localStorage[ns + key];
-					prev = prev !== undefined ? JSON.parse(prev) : prev;
+					prev = localStorage[key];
+					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev);
 					break;
 				case 'remove':
-					prev = localStorage[ns + key];
+					prev = localStorage[key];
 					if(prev !==undefined)
-						localStorage.removeItem(ns + key);
+						localStorage.removeItem(key);
 			}
-			console.log('[io]', tok, 'prev=', prev);
-			ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
+			//console.log('[io]', tok, 'prev=', prev);
+			//ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
 		}},!1);
 }else
 
@@ -99,9 +104,6 @@ var Tout = function(h){
 	,qrN = 12 //max number of waiting queries
 	,errIMax = 120, errNMax = errIMax //max number of errors
 	,ns ='googXButtons_' //namespace for keys
-	,getLocStor = function(name){
-		return (JSON.parse(localStorage && localStorage[ns + name] ||'{}')).h;}
-	,removeLocStor = function(name){localStorage && localStorage.removeItem(ns + name);}
 	,listenMsg
 /**
  * external localStorage for using another domain if current domain storage is erased anywhere
@@ -110,7 +112,7 @@ var Tout = function(h){
  * @param{Object|undefined} h.val (any type)
  * @param{Number|undefined} h.toutLitt
  * @param{Number|undefined} h.tout
- * @param{Function} h.cB - callback with one argument
+ * @param{Function} h.cB - callback with 2 arguments
  * @param{Function|undefined} h.err - callback for err with one argument
  */
 	,xLocStor = function(h){
@@ -156,12 +158,12 @@ var Tout = function(h){
 		});
 		if(!listenMsg) addEventListener('message', function(ev){
 			if(ev.origin == xLocStorOrigin){    // {"tok":"<value>"[,"err":"<txt>"],"h":...}
-				console.log('from_io', JSON.parse(ev.data), ev)
+				//console.log('from_io', JSON.parse(ev.data))
 				var resp = ev.data && ev.data[0] =='{' && JSON.parse(ev.data);
 				if(!resp) xCatch('bad_format', resp, h);
 				if(( qr = qrs[resp.tok] )){
 					qrI -= 1;
-					qr.cB(resp.prev, resp);
+					qr.cB(resp.prev, resp.undef);
 					var er = qr.err;
 					delete qrs[resp.tok];} // else ignore unsufficient token
 				if(resp.err && (!er || er(resp.err)) ) //individual or common error processing depends of er()
@@ -270,17 +272,20 @@ addRules('.siteList:hover button{display: block}'
 	+'.siteList .settIn hr{margin:2px 0}'
 	+'.sbibtd .sfsbc, .sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}');
-var S ={}, settsLength =0; for(var i in setts) settsLength++;
-for(var i in setts)
-	{S[i] = setts[i]; settsLength--;}
-	//xLocStor({op:'get', key: i, cB: (function(i){return function(dat){S[i] = dat; settsLength--;}})(i) }); //TODO promises
+xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
+	//console.info('from site-saver:', prev, undef);
+	setts = prev || setts;
+	var S ={}, settsLength =0;
+	for(var i in setts) settsLength++;
+	for(var i in setts)
+		{S[i] = setts[i]; settsLength--;}
+	console.timeStamp = function(){};
 
 new Tout({t:120, i:8, m: 1.6
 	,check: function(){
 		return /*!settsLength &&*/ d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
 	occur: function(){
-		//alert(11)
 		var lang = S.lang != null && S.lang || setts.lang
 			,sites = S.sites && S.sites.length && S.sites || setts.sites;
 		sites = sites instanceof Array && sites || [sites] || setts.sites ||[];
@@ -310,10 +315,9 @@ new Tout({t:120, i:8, m: 1.6
 			}, ii =0;
 		!sites && delete buttS.site;
 		buttSearch.parentNode.style.position ='relative';
-		xLocStor({do:'set', key:'aaa', val:{12:31}, cB: function(prev,undef){console.info(112, prev, undef);}, el: buttSearch.parentNode});
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
 			var bI = buttS[i]
-				, butt2 = $e({clone: i =='site'|| i.length ==2
+				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: sites[0], date: bI.url} })
 						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
 					,clAdd:'xButt'
@@ -351,10 +355,12 @@ new Tout({t:120, i:8, m: 1.6
 								t.querySelector('.list').style.display ='none';
 							}, 450);
 						}})(bI,i) :'',
-						change: function(ev){
-							xLocStor({op:'set', key: ev.target.name, val: ev.target.type=='INPUT'&& ev.target.value
-								|| ev.target.value.replace(/^[ \n]*|[ \n]*$/g,'').split('\n')
-									,cB: function(){console.info('Settings are saved.')}});
+						change: function(ev){ var aaa,aab;
+							xLocStor({do:'set', key:'sett', val:{lang: (aaa=d.querySelectorAll('.lang', ev.target.form))[aaa.length-1].value
+								,sites: (aab=d.querySelectorAll('.sites', ev.target.form))[aab.length-1].value.replace(/^[ \n]*|[ \n]*$/g,'')
+									.split('\n')
+								,lastHoursLess: S.lastHoursLess}
+								,cB: function(){console.info('Settings are saved.')}});
 							d.querySelector('.siteList .settIn').classList.add('changed');
 						} }
 					,apT: buttSearch.parentNode
@@ -381,8 +387,8 @@ new Tout({t:120, i:8, m: 1.6
 								,innerHTML:'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
 									?'':'<div class="settIn">'
 										+$L.Settings +' '+ $L['of userscript'] +'<br>"Google Search Extra Buttons"<hr>'
-										+$L['Interface language'] +': <input size=4 value="'+ lang +'"/><br>' //TODO select Tag for accessible langs
-										+$L['Sites'] +': <br><textarea style="width:97%" rows=8>'
+										+$L['Interface language'] +': <input class="lang" size=4 value="'+ lang +'"/><br>' //TODO select Tag for accessible langs
+										+$L['Sites'] +': <br><textarea class="sites" style="width:97%" rows=8>'
 											+ strSites +'</textarea><br>'
 										+'<a class="reload" href=# onclick="location.reload();return!1">'
 											+ $L['reload page for effect'] +'</a>'
@@ -396,6 +402,8 @@ new Tout({t:120, i:8, m: 1.6
 		}
 	}
 });
+
+}, el: d.body});
 
 })({ //write "lang:''," to remove hints; 'en' for English hints (fr - Français, es - espagnol), 'ru' for Russian
 	lang:''|| (navigator.languages && navigator.languages[1] || navigator.language.substr(0,2)) //='' if hide hints, or 2 letters from $l{}
