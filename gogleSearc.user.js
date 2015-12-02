@@ -3,12 +3,13 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     11.2015.11.30
+// @version     12.2015.12.1
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
 // @include     https://www.google.*/*
 // @include     https://encrypted.google.*/search*
+// @include     https://encrypted.google.*/*
 // @include     https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html
 // ==/UserScript==
 if(location.host=='spmbt.github.io'){
