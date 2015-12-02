@@ -5,8 +5,9 @@
 		var listen = window.addEventListener;
 		(listen||window.attachEvent)((listen ?'':'on') +'message', function(ev){
 			var d = typeof ev.data =='string' && ev.data[0] =='{' ? JSON.parse(ev.data) : ev.data
-					,tok = d.tok
-					,key = d.key, ns ='googXButtons_';
+			if(!d.do) return;
+			var tok = d.tok
+				,key = d.key, ns ='googXButtons_';
 			switch(d.do){
 				case 'set':
 					var prev = localStorage[ns + key];
