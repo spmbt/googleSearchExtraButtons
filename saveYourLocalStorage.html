@@ -4,13 +4,17 @@
 	<script>
 		var listen = window.addEventListener;
 		(listen||window.attachEvent)((listen ?'':'on') +'message', function(ev){
-			var d = JSON.parse(ev.data)
+			var d = typeof ev.data =='string' && ev.data[0] =='{' ? JSON.parse(ev.data) : ev.data
 					,tok = d.tok
 					,key = d.key, ns ='googXButtons_';
 			switch(d.do){
 				case 'set':
 					var prev = localStorage[ns + key];
-					localStorage[ns + key] = JSON.stringify(d.val); break;
+					if(d.val !==undefined)
+						localStorage[ns + key] = JSON.stringify(d.val);
+					else
+						localStorage.removeItem(ns + key);
+					break;
 				case 'get':
 					prev = localStorage[ns + key];
 					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev); break
