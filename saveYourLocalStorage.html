@@ -7,22 +7,22 @@
 			var d = typeof ev.data =='string' && ev.data[0] =='{' ? JSON.parse(ev.data) : ev.data
 			if(!d.do) return;
 			var tok = d.tok
-				,key = d.key, ns ='googXButtons_';
+				,key = d.key;
 			switch(d.do){
 				case 'set':
-					var prev = localStorage[ns + key];
+					var prev = localStorage[key];
 					if(d.val !==undefined)
-						localStorage[ns + key] = JSON.stringify(d.val);
+						localStorage[key] = JSON.stringify(d.val);
 					else
-						localStorage.removeItem(ns + key);
+						localStorage.removeItem(key);
 					break;
 				case 'get':
-					prev = localStorage[ns + key];
+					prev = localStorage[key];
 					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev); break
 				case 'remove':
-					prev = localStorage[ns + key];
+					prev = localStorage[key];
 					if(prev !==undefined)
-						localStorage.removeItem(ns + key);
+						localStorage.removeItem(key);
 			}
 			console.log('[io2]', tok, 'prev=', prev);
 			ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
