@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     12.2015.12.1
+// @version     13.2015.12.5
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -44,6 +44,7 @@ if(location.host=='spmbt.github.io'){
 
 var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===extend===
 	,$pd = function(ev){ev.preventDefault();}
+	,lh = location.href
 	,d = document
 ,$e = function(g){ //===create or use existing element=== //g={el|clone,cl,ht,cs,at,atRemove,on,apT}
 	g.el = g.el || g.clone ||'DIV';
@@ -300,7 +301,7 @@ new Tout({t:120, i:8, m: 1.6
 		}
 		if(sites.length)
 			sites.push($LSettings = $L['Settings'])
-			,mainPg = /\/search\?/.test(location.href);
+			,mainPg = /\/search\?/.test(lh);
 		var inputSearch = this.dat
 				,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0]
 			,buttS ={
@@ -340,7 +341,8 @@ new Tout({t:120, i:8, m: 1.6
 								$pd(ev);
 							}: function(ev){
 								location.href = '/search?q='+ encodeURIComponent(inputSearch.value)
-									+(ev.target.getAttribute('date') + ev.target.getAttribute('site').replace(/\D/g,'') || bI.url);
+									+(ev.target.getAttribute('date') + ev.target.getAttribute('site').replace(/\D/g,'') || bI.url)
+									+(/[&?]tbm=/.test(lh) ? '&'+/tbm=[^&]*/.exec(lh)[0]:''); //saving type of page
 								$pd(ev);
 							}
 						})(bI, i),
