@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     15.2015.12.6
+// @version     17.2015.12.7
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -228,11 +228,11 @@ var Tout = function(h){
 		,'from / to':'im Zeitraum'
 		,'last':['letzte','letzte','letzte']
 		,'day':'Tag'
-		,'days':['Tage','Tagen']
+		,'days':['Tage','Tage']
 		,'week':'Woche'
 		,'weeks':['Wochen','Wochen']
 		,'month':'Monat'
-		,'months':['Monate','Monaten']
+		,'months':['Monate','Monate']
 		,'year':'Jahr'
 		,'years':['Jahre','Jahre']
 		,'hour':'Stunde'
@@ -275,11 +275,11 @@ addRules('.siteList:hover button{display: block}'
 	+'.siteList .settIn{display: none; width: 250px; padding: 2px 4px; text-align:left; border:1px solid #48f;'
 		+'background-color:#eef; color:#336}'
 	+'.siteList .settIn hr{margin:2px 0}'
-	+'.sbibtd .sfsbc, .sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
+	+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}');
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
-	//console.info('from site-saver:', prev, undef);
 	S = prev || setts;
+	S.dwmyh = S.dwmyh || setts.dwmyh; //temp. transitional expr.
 	console.timeStamp = function(){};
 
 new Tout({t:120, i:8, m: 1.6
@@ -308,45 +308,56 @@ new Tout({t:120, i:8, m: 1.6
 				PDF:{url:'filetype:pdf', txt:$L['search in PDF files']}
 				,site:{url:'site:'+ S.sites[0], txt:$L['search in']+' '+ S.sites[0], one:'day'} //you may comment this line
 				,'.. : ..':{url:'', txt:$L['from / to']}
-				,'1D':{url:'&tbs=qdr:d', txt:$L['last'][1] +' '+ $L['day'], one:'day', up:13}
-				,'7D':{url:'&tbs=qdr:w', txt:$L['last'][2] +' '+ $L['week'], one:'week', up:14}
-				,'1M':{url:'&tbs=qdr:m', txt:$L['last'][0] +' '+ $L['month'], one:'month', up:20}
-				,'1Y':{url:'&tbs=qdr:y', txt:$L['last'][0] +' '+ $L['year'], one:'year', up:10}
-				,'1H':{url:'&tbs=qdr:h', txt:$L['last'][0] +' '+ $L['hour'], one:'hour', up:23}
-			}, ii =0;
+				,'1D':{url:'&tbs=qdr:d', txt:$L['last'][1] +' '+ $L['day'], one:'day', up:13,lett:'D'}
+				,'1W':{url:'&tbs=qdr:w', txt:$L['last'][2] +' '+ $L['week'], one:'week', up:14,lett:'W'}
+				,'1M':{url:'&tbs=qdr:m', txt:$L['last'][0] +' '+ $L['month'], one:'month', up:20,lett:'M'}
+				,'1Y':{url:'&tbs=qdr:y', txt:$L['last'][0] +' '+ $L['year'], one:'year', up:10,lett:'Y'}
+				,'1H':{url:'&tbs=qdr:h', txt:$L['last'][0] +' '+ $L['hour'], one:'hour', up:23,lett:'H'}
+				,DOC:{url:'filetype:doc', txt:$L['search in PDF files'].replace(/PDF/,'DOC')}
+		}, ii = 0, iD = -1;
 		!sites && delete buttS.site;
 		buttSearch.parentNode.style.position ='relative';
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
+			if(i.length ==2) iD++; else iD=-1;
 			var bI = buttS[i]
+				,Gesch = ({m:'letzter',zh:'letzte',sr:'letztes'})['m,zh,m,sr,zh'.split(',')[iD]]
 				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
 						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
 					,clAdd:'xButt'
 					,atRemove: ['id', 'name']
-					,at: {value: i, innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="'
-						+(lang || i=='site'|| i=='.. : ..' ? bI.txt :'')+'">'+ i +'</span>'}
+					,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
+						,innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
+							? bI.txt.replace(/letzte/,Gesch) :'')+'">'+ (iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
 					,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * (ii++ - (ii >2 && !mainPg))) +'px'}
-					,on: {click: (function(bI, i){
-						//console.log('clic:',i,bI)
-						return /PDF|site/.test(i)
+					,on: {click: (function(bI, i, iD){
+						return /PDF|DOC|site/.test(i)
 							? function(ev){
-								if((ev.target.getAttribute('site') ==null && ev.target.parentNode.getAttribute('site') ==null)
-									|| ev.target.getAttribute('site')==$LSettings || ev.target.parentNode.getAttribute('site')==$LSettings) return;
+								if(ev.target.className =='defa')
+									saveLocStor('','','remove'); $pd(ev);
+								if(((ev.target.getAttribute('site') ==null && ev.target.parentNode.getAttribute('site') ==null)
+									|| ev.target.getAttribute('site')==$LSettings || ev.target.parentNode.getAttribute('site')==$LSettings)
+										&& !/PDF|DOC/.test(ev.target.getAttribute('value'))) return;
+								console.log('clic:',i,bI,ev, ev.target.className, inputSearch.value, this.form)
 								inputSearch.value = inputSearch.value.replace(/ site\:[\w.]*$/ig, '')
-									.replace(' filetype:pdf', '') +' '
-									+ (i =='PDF' ? bI.url : 'site:'+ (ev.target.getAttribute('site')||ev.currentTarget.getAttribute('site')||''));
-								if(ev.target.className =='siteList') this.form.click();
-							}: !bI.url ? function(ev){
+									.replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'') +' '+ (/PDF|DOC/.test(i) ? bI.url
+										: 'site:'+ (ev.target.getAttribute('site')||ev.currentTarget.getAttribute('site')||''));
+								if(/siteList|xButt/.test(ev.target.className)) this.form.submit();
+							}: !bI.url ? function(ev){ //from-to date
 								var el = d.querySelector('#cdrlnk'), o;
 								el && el.dispatchEvent(((o = d.createEvent('Events')).initEvent('click', !0, !1), o));
 								$pd(ev);
-							}: function(ev){
+							}: function(ev){ //last interval
 								location.href = '/search?q='+ encodeURIComponent(inputSearch.value)
-									+(ev.target.getAttribute('date') + ev.target.getAttribute('site').replace(/\D/g,'') || bI.url)
+									+((ev.target.getAttribute('date')||ev.target.parentNode.getAttribute('date'))
+										+ (ev.target.getAttribute('value')||ev.target.parentNode.getAttribute('value')).replace(/\D/g,'') || bI.url)
 									+(/[&?]tbm=/.test(lh) ? '&'+/tbm=[^&]*/.exec(lh)[0]:''); //saving type of page
+								S.dwmyh[iD] = +(ev.target.getAttribute('value')||ev.target.parentNode.getAttribute('value')).replace(/\D/g,'');
 								$pd(ev);
+								ev.stopPropagation();
+								saveLocStor();
 							}
-						})(bI, i),
+						})(bI, i, iD),
 						mouseover: i =='site' || i.length ==2 ? (function(bI,i){return function(ev){
 							clearTimeout(bI.ww);
 							ev.currentTarget.querySelector('.list').style.display ='block';
@@ -358,25 +369,19 @@ new Tout({t:120, i:8, m: 1.6
 								t.querySelector('.list').style.display ='none';
 							}, 450);
 						}})(bI,i) :'',
-						change: function(ev){ var aaa,aab,aac;
-							xLocStor({do:'set', key:'sett', val:{lang: (aaa=d.querySelectorAll('.lang', ev.target.form))[aaa.length-1].value
-								,sites: (aab=d.querySelectorAll('.sites', ev.target.form))[aab.length-1].value.replace(/^[ \t]*|[ \n\t]*$/g,'')
-									.split('\n')
-								,lastHoursLess: (aac=d.querySelectorAll('.less', ev.target.form))[aac.length-1].checked}
-								,cB: function(){console.info('Settings are saved.', d.querySelectorAll('.less', ev.target.form)[aac.length-1].checked)}});
-							d.querySelector('.siteList .settIn').classList.add('changed');
-						} }
+						change: saveLocStor
+					}
 					,apT: buttSearch.parentNode
 				});
 			bI.el = butt2;
 			if(i =='site' || i.length ==2){ //dropdown lists under some buttons
 				var siteList = $e({cl:'list',cs:{display:'none'}, apT: butt2}), arr =[];
-				for(var j =0; j <= bI.up -1 -(i=='7D'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
+				for(var j =0; j <= bI.up -1 -(i=='1W'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
 						if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
 					arr.push((j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]));
-				console.log(S.sites,i);
+				//console.log(S.sites,i, S.dwmyh);
 				var list = i == 'site' ? sites||[] : i =='1D'&& !sites ? arr.concat([$LSettings]) : arr;
-				for(var j in list) if(j !=0)
+				for(var j in list) if(j !=0 || iD!=-1 && S.dwmyh[iD] !=1)
 					var sI = list[j]
 						,butt3 = $e({clone: sI==$LSettings
 								? $e({cl: 'sett lsb'})
@@ -386,7 +391,7 @@ new Tout({t:120, i:8, m: 1.6
 							,at:{value: sI
 								,site: sI
 								,date: bI.url
-								,title: sI==$LSettings || !lang ?'':(i =='site'?$L['search in']:$L['last'][1]) +' '+ sI
+								,title: sI==$LSettings || !lang ?'':(i =='site'?$L['search in']:$L['last'][1]).replace(/letzte/,Gesch) +' '+ sI
 								,innerHTML:'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
 									?'':'<div class="settIn">'
 										+$L.Settings +' '+ $L['of userscript'] +'<br>"Google Search Extra Buttons"<hr>'
@@ -406,6 +411,7 @@ new Tout({t:120, i:8, m: 1.6
 									+'</div>')}
 							,cs: {position: sI != $LSettings ?'static':'absolute',display:'block', width:'auto', height: sI != $LSettings ?'18px':'16px'
 								,margin:'2px 0 -1px -13px', padding:0, textAlign:'left', fontWeight:'normal', opacity:1}
+							,on:{click: function(ev){$pd(ev)}}
 							,apT: siteList
 						});
 				siteList.style.height ='auto'; siteList.style.textAlign ='center';
@@ -415,6 +421,19 @@ new Tout({t:120, i:8, m: 1.6
 });
 
 }, el: d.body});
+	var saveLocStor = function(ev, val, do2){ var aaa,aab,aac, t = ev && ev.target.form || document.documentElement || document.body;
+		xLocStor({do: do2 ||'set', key:'sett'
+			, val:{lang: (aaa=d.querySelectorAll('.lang', t))[aaa.length-1].value
+				,sites: (aab=d.querySelectorAll('.sites', t))[aab.length-1].value.replace(/^[ \t]*|[ \n\t]*$/g,'')
+						.split('\n')
+				,lastHoursLess: (aac=d.querySelectorAll('.less', t))[aac.length-1].checked
+				,dwmyh: S.dwmyh || setts.dwmyh
+			}
+			,cB: function(prev){
+				console.info('Settings are saved. prev=', prev);}
+		});
+		d.querySelector('.siteList .settIn').classList.add('changed');
+	};
 
 })({ //write "lang:''," to remove hints; 'en' for English hints (fr - Français, es - espagnol), 'ru' for Russian
 	lang:''|| (navigator.languages && navigator.languages[1] || navigator.language.substr(0,2)) //='' if hide hints, or 2 letters from $l{}
