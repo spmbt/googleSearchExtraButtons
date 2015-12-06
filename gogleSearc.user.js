@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     13.2015.12.5
+// @version     15.2015.12.6
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -135,7 +135,7 @@ var Tout = function(h){
 					wToutLitt: (function(h, qrI, errIMax){return setTimeout(function(){
 							qrI -= 1;
 							if((errIMax -= 1) >=0)
-								console.warn('toutLitt', h);
+								;//console.warn('toutLitt', h);
 							chkErrMax();
 						}, h.toutLitt);})(h, qrI, errIMax)
 					,wTout: (function(h, qrI){return setTimeout(function(){
@@ -199,6 +199,7 @@ var Tout = function(h){
 		,'of userscript':'юзерскрипта'
 		,'reload page for effect':'перезагрузить страницу'
 		,'Interface language':'Язык интерфейса'
+		,'Less positions at the end of selects':'Меньше выбора в конце селектов'
 		,'Sites':'Сайты'
 	},fr:{
 		'search in PDF files':'la recherche dans les fichiers PDF'
@@ -219,6 +220,7 @@ var Tout = function(h){
 		,'of userscript':'de Userscript'
 		,'reload page for effect':'recharger la page pour effet'
 		,'Interface language':'Langue de l\'interface'
+		,'Less positions at the end of selects':'Moins de choix les longues listes'
 		,'Sites':'Les sites'
 	},de:{
 		'search in PDF files':'suche in PDF-Dateien'
@@ -239,6 +241,7 @@ var Tout = function(h){
 		,'of userscript':'von userscript'
 		,'reload page for effect':'nachladen Seite für Effekt'
 		,'Interface language':'Schnittstellensprache'
+		,'Less positions at the end of selects':'Weniger Auswahl in langen Listen'
 		,'Sites':'Webseiten'
 	},es:{
 		'search in PDF files':'búsqueda en archivos PDF'
@@ -259,6 +262,7 @@ var Tout = function(h){
 		,'of userscript':'de userscript'
 		,'reload page for effect':'página para efecto de recargar'
 		,'Interface language':'Idioma de interfaz'
+		,'Less positions at the end of selects':'Menos elección en listas largas'
 		,'Sites':'Sitios'
 	}}; //if !lang, then no hints
 addRules('.siteList:hover button{display: block}'
@@ -275,23 +279,18 @@ addRules('.siteList:hover button{display: block}'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}');
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
 	//console.info('from site-saver:', prev, undef);
-	setts = prev || setts;
-	var S ={}, settsLength =0;
-	for(var i in setts) settsLength++;
-	for(var i in setts)
-		{S[i] = setts[i]; settsLength--;}
+	S = prev || setts;
 	console.timeStamp = function(){};
 
 new Tout({t:120, i:8, m: 1.6
 	,check: function(){
-		return /*!settsLength &&*/ d && d.getElementsByName('q') && d.getElementsByName('q')[0];
+		return d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
 	occur: function(){
 		var lang = S.lang != null && S.lang || setts.lang
-			,sites = S.sites && S.sites.length && S.sites || setts.sites;
-		sites = sites instanceof Array && sites || [sites] || setts.sites ||[];
-		var strSites = sites.join('\n')
-			,$LSettings
+			,sites = S.sites && (S.sites.length && S.sites[0] || S.sites.length >1) && S.sites
+				|| typeof sites =='string'&& [sites] || !S.sites && setts.sites || null;
+		var strSites = sites && sites.join('\n').replace(/^\n/,'\n\n') ||''
 			,$L = $l[lang] || $l.ru; //default template of lang
 		if(!lang || !$l[lang] || lang =='en') for(var l in $L){ //replace 'en' lang for default or substitution
 			if($L[l] instanceof Array) for(var l2 in $L[l])
@@ -299,18 +298,19 @@ new Tout({t:120, i:8, m: 1.6
 			else
 				$L[l] = l;
 		}
-		if(sites.length)
-			sites.push($LSettings = $L['Settings'])
-			,mainPg = /\/search\?/.test(lh);
-		var inputSearch = this.dat
-				,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0]
+		var $LSettings = $L['Settings'];
+		if(sites && sites.length)
+			sites.push($LSettings)
+		var mainPg = /\/search\?/.test(lh)
+			,inputSearch = this.dat
+			,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0]
 			,buttS ={
 				PDF:{url:'filetype:pdf', txt:$L['search in PDF files']}
-				,site:{url:'site:'+ sites[0], txt:$L['search in']+' '+ sites[0], one:'day'} //you may comment this line
+				,site:{url:'site:'+ S.sites[0], txt:$L['search in']+' '+ S.sites[0], one:'day'} //you may comment this line
 				,'.. : ..':{url:'', txt:$L['from / to']}
 				,'1D':{url:'&tbs=qdr:d', txt:$L['last'][1] +' '+ $L['day'], one:'day', up:13}
-				,'7D':{url:'&tbs=qdr:w', txt:$L['last'][2] +' '+ $L['week'], one:'week', up:10}
-				,'1M':{url:'&tbs=qdr:m', txt:$L['last'][0] +' '+ $L['month'], one:'month', up:11}
+				,'7D':{url:'&tbs=qdr:w', txt:$L['last'][2] +' '+ $L['week'], one:'week', up:14}
+				,'1M':{url:'&tbs=qdr:m', txt:$L['last'][0] +' '+ $L['month'], one:'month', up:20}
 				,'1Y':{url:'&tbs=qdr:y', txt:$L['last'][0] +' '+ $L['year'], one:'year', up:10}
 				,'1H':{url:'&tbs=qdr:h', txt:$L['last'][0] +' '+ $L['hour'], one:'hour', up:23}
 			}, ii =0;
@@ -319,7 +319,7 @@ new Tout({t:120, i:8, m: 1.6
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
 			var bI = buttS[i]
 				,butt2 = $e({clone: i =='site'|| i.length ==2
-						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: sites[0], date: bI.url} })
+						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
 						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
 					,clAdd:'xButt'
 					,atRemove: ['id', 'name']
@@ -330,10 +330,11 @@ new Tout({t:120, i:8, m: 1.6
 						//console.log('clic:',i,bI)
 						return /PDF|site/.test(i)
 							? function(ev){
-								if(!ev.target.getAttribute('site') || ev.target.getAttribute('site')==$LSettings) return;
-								inputSearch.value = inputSearch.value.replace(/ site\:[\w.]+$/i, '')
+								if((ev.target.getAttribute('site') ==null && ev.target.parentNode.getAttribute('site') ==null)
+									|| ev.target.getAttribute('site')==$LSettings || ev.target.parentNode.getAttribute('site')==$LSettings) return;
+								inputSearch.value = inputSearch.value.replace(/ site\:[\w.]*$/ig, '')
 									.replace(' filetype:pdf', '') +' '
-									+ (i =='PDF' ? bI.url : 'site:'+ ev.target.getAttribute('site'));
+									+ (i =='PDF' ? bI.url : 'site:'+ (ev.target.getAttribute('site')||ev.currentTarget.getAttribute('site')||''));
 								if(ev.target.className =='siteList') this.form.click();
 							}: !bI.url ? function(ev){
 								var el = d.querySelector('#cdrlnk'), o;
@@ -357,12 +358,12 @@ new Tout({t:120, i:8, m: 1.6
 								t.querySelector('.list').style.display ='none';
 							}, 450);
 						}})(bI,i) :'',
-						change: function(ev){ var aaa,aab;
+						change: function(ev){ var aaa,aab,aac;
 							xLocStor({do:'set', key:'sett', val:{lang: (aaa=d.querySelectorAll('.lang', ev.target.form))[aaa.length-1].value
-								,sites: (aab=d.querySelectorAll('.sites', ev.target.form))[aab.length-1].value.replace(/^[ \n]*|[ \n]*$/g,'')
+								,sites: (aab=d.querySelectorAll('.sites', ev.target.form))[aab.length-1].value.replace(/^[ \t]*|[ \n\t]*$/g,'')
 									.split('\n')
-								,lastHoursLess: S.lastHoursLess}
-								,cB: function(){console.info('Settings are saved.')}});
+								,lastHoursLess: (aac=d.querySelectorAll('.less', ev.target.form))[aac.length-1].checked}
+								,cB: function(){console.info('Settings are saved.', d.querySelectorAll('.less', ev.target.form)[aac.length-1].checked)}});
 							d.querySelector('.siteList .settIn').classList.add('changed');
 						} }
 					,apT: buttSearch.parentNode
@@ -370,11 +371,11 @@ new Tout({t:120, i:8, m: 1.6
 			bI.el = butt2;
 			if(i =='site' || i.length ==2){ //dropdown lists under some buttons
 				var siteList = $e({cl:'list',cs:{display:'none'}, apT: butt2}), arr =[];
-				for(var j =0; j <= bI.up -1; j++) if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
+				for(var j =0; j <= bI.up -1 -(i=='7D'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
+						if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
 					arr.push((j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]));
-				if(!S.sites && i =='1H')
-					arr.push($LSettings = $L['Settings']);
-				var list = i == 'site' ? sites : arr;
+				console.log(S.sites,i);
+				var list = i == 'site' ? sites||[] : i =='1D'&& !sites ? arr.concat([$LSettings]) : arr;
 				for(var j in list) if(j !=0)
 					var sI = list[j]
 						,butt3 = $e({clone: sI==$LSettings
@@ -389,7 +390,15 @@ new Tout({t:120, i:8, m: 1.6
 								,innerHTML:'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
 									?'':'<div class="settIn">'
 										+$L.Settings +' '+ $L['of userscript'] +'<br>"Google Search Extra Buttons"<hr>'
-										+$L['Interface language'] +': <input class="lang" size=4 value="'+ lang +'"/><br>' //TODO select Tag for accessible langs
+										+$L['Interface language'] +': <select class="lang" style="width:70px">'
+										+(function(){var s='<option'+ (lang=='en'?' selected':'') +'>en</option>';
+											for(var i in $l)
+												s+='<option'+ (lang==i ?' selected':'') +'>'+ i +'</option>';
+											return s +'<option value=""'+ (lang==''?' selected':'') +'>en w/o hints</option>'})()
+										+'</select><br>'
+										+'<input type="checkbox" class="less" id="hoursLess"'+ (S.lastHoursLess ?' checked':'') +'/>'
+											+'<label for="hoursLess">'+ $L['Less positions at the end of selects'] +'</label><br>'
+										+'<i><a href="#" class="defa" style="float: right">Default settings</a></i>'
 										+$L['Sites'] +': <br><textarea class="sites" style="width:97%" rows=8>'
 											+ strSites +'</textarea><br>'
 										+'<a class="reload" href=# onclick="location.reload();return!1">'
@@ -412,6 +421,6 @@ new Tout({t:120, i:8, m: 1.6
 	,sites: [ //=array or one site in string
 		'slashdot.org','engadget.com','techcrunch.com','habrahabr.ru','geektimes.ru'
 		,'smashingmagazine.com','maketecheasier.com'] //write your favorite sites
-	,lastHoursLess: 1 //=boolean - not show odd values of hours after 8 h
+	,lastHoursLess: 1 //=boolean - not show odd some values of hours after 8 h
 	,dwmyh: [1,1,1,1,1] //=array of numbers - current vals of days, weeks, months, years, hours
 });
