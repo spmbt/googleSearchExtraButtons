@@ -4,19 +4,28 @@
 	<script>
 		var listen = window.addEventListener;
 		(listen||window.attachEvent)((listen ?'':'on') +'message', function(ev){
-			var d = JSON.parse(ev.data)
-				,tok = d.tok
+			var d = typeof ev.data =='string' && ev.data[0] =='{' ? JSON.parse(ev.data) : ev.data
+			if(!d.do) return;
+			var tok = d.tok
 				,key = d.key;
 			switch(d.do){
 				case 'set':
-					if(localStorage)
-                        localStorage[key] = JSON.stringify(d.val); break;
+					var prev = localStorage[key];
+					if(d.val !==undefined)
+						localStorage[key] = JSON.stringify(d.val);
+					else
+						localStorage.removeItem(key);
+					break;
 				case 'get':
-                    var h = localStorage && JSON.parse(localStorage[key]); break;
-				case 'remove': localStorage && localStorage.removeItem(key);
+					prev = localStorage[key];
+					prev = prev === undefined || typeof prev =='string'&& prev[0] !='{'? prev : JSON.parse(prev); break
+				case 'remove':
+					prev = localStorage[key];
+					if(prev !==undefined)
+						localStorage.removeItem(key);
 			}
-            console.log('[io2]', d, tok);
-			ev.source.postMessage(JSON.stringify(h ? {tok: tok, h: h}:{tok: tok}), ev.origin);
+			console.log('[io2]', tok, 'prev=', prev);
+			ev.source.postMessage(JSON.stringify(prev !==undefined ? {tok: tok, prev: prev} : {tok: tok, undef:1}), ev.origin);
 		},!1);
 	</script>
 </head>
