@@ -265,7 +265,7 @@ var Tout = function(h){
 		,'Less positions at the end of selects':'Menos elección en listas largas'
 		,'Sites':'Sitios'
 	}}; //if !lang, then no hints
-addRules('.sfsbc{display: inline-block}.siteList:hover button{display: block}'
+addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display: block}'
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
 	+'.lsbb .xButt,.lsbb >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
 		+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff; opacity: 0.64}'
@@ -338,7 +338,7 @@ new Tout({t:120, i:8, m: 1.6
 								if(((ev.target.getAttribute('site') ==null && ev.target.parentNode.getAttribute('site') ==null)
 									|| ev.target.getAttribute('site')==$LSettings || ev.target.parentNode.getAttribute('site')==$LSettings)
 										&& !/PDF|DOC/.test(ev.target.getAttribute('value'))) return;
-								//console.log('clic:',i,bI,ev, ev.target.className, inputSearch.value, this.form)
+								console.log('clic:',i,bI,ev, ev.target.className, inputSearch.value, this.form)
 								inputSearch.value = inputSearch.value.replace(/ site\:[\w.]*$/ig, '')
 									.replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'') +' '+ (/PDF|DOC/.test(i) ? bI.url
 										: 'site:'+ (ev.target.getAttribute('site')||ev.currentTarget.getAttribute('site')||''));
