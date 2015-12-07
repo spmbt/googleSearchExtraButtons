@@ -223,8 +223,8 @@ var Tout = function(h){
 		,'Less positions at the end of selects':'Moins de choix les longues listes'
 		,'Sites':'Les sites'
 	},de:{
-		'search in PDF files':'suche in PDF-Dateien'
-		,'search in':'suche in'
+		'search in PDF files':'Suche in PDF-Dateien'
+		,'search in':'Suche in'
 		,'from / to':'im Zeitraum'
 		,'last':['letzte','letzte','letzte']
 		,'day':'Tag'
@@ -238,11 +238,11 @@ var Tout = function(h){
 		,'hour':'Stunde'
 		,'hours':['Stunden','Stunden']
 		,'Settings':'Einstellungen'
-		,'of userscript':'von userscript'
-		,'reload page for effect':'nachladen Seite für Effekt'
-		,'Interface language':'Schnittstellensprache'
+		,'of userscript':'von Userscript'
+		,'reload page for effect':'Seite neu laden'
+		,'Interface language':'Sprache'
 		,'Less positions at the end of selects':'Weniger Auswahl in langen Listen'
-		,'Sites':'Webseiten'
+		,'Sites':'Websites'
 	},es:{
 		'search in PDF files':'búsqueda en archivos PDF'
 		,'search in':'busca en'
