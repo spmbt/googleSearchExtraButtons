@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
 // @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     17.2015.12.7
+// @version     18.2015.12.8
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -320,7 +320,8 @@ new Tout({t:120, i:8, m: 1.6
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
 			if(i.length ==2) iD++; else iD=-1;
 			var bI = buttS[i]
-				,Gesch = ({m:'letzter',zh:'letzte',sr:'letztes'})['m,zh,m,sr,zh'.split(',')[iD]]
+				,Gesch = ({m:'letzter',f:'letzte',n:'letztes'})['m,f,m,n,f'.split(',')[iD]]
+				,hint = function(j){return (j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]) }
 				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
 						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
@@ -328,7 +329,8 @@ new Tout({t:120, i:8, m: 1.6
 					,atRemove: ['id', 'name']
 					,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
 						,innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
-							? bI.txt.replace(/letzte/,Gesch) :'')+'">'+ (iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
+								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['last'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')+'">'
+							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
 					,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * (ii++ - (ii >2 && !mainPg))) +'px'}
 					,on: {click: (function(bI, i, iD){
 						return /PDF|DOC|site/.test(i)
@@ -378,7 +380,7 @@ new Tout({t:120, i:8, m: 1.6
 				var siteList = $e({cl:'list',cs:{display:'none'}, apT: butt2}), arr =[];
 				for(var j =0; j <= bI.up -1 -(i=='1W'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
 						if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
-					arr.push((j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]));
+					arr.push(hint(j));
 				//console.log(S.sites,i, S.dwmyh);
 				var list = i == 'site' ? sites||[] : i =='1D'&& !sites ? arr.concat([$LSettings]) : arr;
 				for(var j in list) if(j !=0 || iD!=-1 && S.dwmyh[iD] !=1)
@@ -391,7 +393,8 @@ new Tout({t:120, i:8, m: 1.6
 							,at:{value: sI
 								,site: sI
 								,date: bI.url
-								,title: sI==$LSettings || !lang ?'':(i =='site'?$L['search in']:$L['last'][1]).replace(/letzte/,Gesch) +' '+ sI
+								,title: sI==$LSettings || !lang ?'':(i =='site' ? $L['search in'] +' '+ sI
+									: j==0 ? bI.txt : $L['last'][1] +' '+ sI).replace(/letzte/,Gesch)
 								,innerHTML:'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
 									?'':'<div class="settIn">'
 										+$L.Settings +' '+ $L['of userscript'] +'<br>"Google Search Extra Buttons"<hr>'
@@ -404,7 +407,7 @@ new Tout({t:120, i:8, m: 1.6
 										+'<input type="checkbox" class="less" id="hoursLess"'+ (S.lastHoursLess ?' checked':'') +'/>'
 											+'<label for="hoursLess">'+ $L['Less positions at the end of selects'] +'</label><br>'
 										+'<i><a href="#" class="defa" style="float: right">Default settings</a></i>'
-										+$L['Sites'] +': <br><textarea class="sites" style="width:97%" rows=8>'
+										+$L.Sites +': <br><textarea class="sites" style="width:97%" rows=8>'
 											+ strSites +'</textarea><br>'
 										+'<a class="reload" href=# onclick="location.reload();return!1">'
 											+ $L['reload page for effect'] +'</a>'
