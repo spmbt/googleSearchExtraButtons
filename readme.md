@@ -14,6 +14,7 @@ Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en
 
 Script adds 8 types of buttons that doubled links hidden in:
 
+* change interface language (en(default), fr, ru, es) in Settings area;
 * search PDF docs;
 * search in site (from list; if no list in settings (or commented), this button is not displayed);
 * write list of your favorite sites in code (example: ['slashdot.org','digg.com']);
@@ -25,6 +26,8 @@ Script adds 8 types of buttons that doubled links hidden in:
 * search for 1,2..22 last hours;
 * multilanguage interface by settings in navigator.language or in script: ('en' is default or on undescribed language);
 * remove lang in settings for no hints (interface language will be English).
+* save settings (language and sites list) in the external localStorage (google clean own storage), copy list as text.
+* keep type of current page ('tbm=' parameter) - news, pictures, video etc.
 
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
