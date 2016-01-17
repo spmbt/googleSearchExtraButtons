@@ -29,9 +29,11 @@
 
 Основано на [статье BarsMonster](http://habrahabr.ru/post/179367/) .
 
+17 янв. 2016: поправлен авто-запуск поиска по сайту после выбора варианта; переключение чекбокса
 
 ![Для поиска по сайту](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-white.png)
 
 ![Список для поиска по сайту в тёмном дизайне заголовка](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-dark.png)
 
 ![Версия 9 сент. 2015: больше кнопок](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/20150909-googleSearchExtra123week.png)
+ 

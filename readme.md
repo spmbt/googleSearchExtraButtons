@@ -29,6 +29,8 @@ Script adds 8 types of buttons that doubled links hidden in:
 * save settings (language and sites list) in the external localStorage (google clean own storage), copy list as text.
 * keep type of current page ('tbm=' parameter) - news, pictures, video etc.
 
+2016-01-17: fix autostart after select of site; switch of checkbox.
+
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
 Screenshots:

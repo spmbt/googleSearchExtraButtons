@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        Google Search Extra Buttons
 // @name:ru     GoogleSearchExtraButtons
-// @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for results of Google search page
-// @description:ru Кнопки вариантов поиска для результатов Google (1-2-3 дня, недели, PDF, ...)
-// @version     18.2015.12.8
+// @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page
+// @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
+// @version     19.2016.1.17
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -44,6 +44,7 @@ if(location.host=='spmbt.github.io'){
 
 var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===extend===
 	,$pd = function(ev){ev.preventDefault();}
+	,$q = function(q, el){return (el||document).querySelector(q)}
 	,lh = location.href
 	,d = document
 ,$e = function(g){ //===create or use existing element=== //g={el|clone,cl,ht,cs,at,atRemove,on,apT}
@@ -335,18 +336,19 @@ new Tout({t:120, i:8, m: 1.6
 					,on: {click: (function(bI, i, iD){
 						return /PDF|DOC|site/.test(i)
 							? function(ev){
-								if(ev.target.className =='defa')
+								var doc, t = ev.target;
+								if(t.className =='defa')
 									saveLocStor('','','remove'); $pd(ev);
-								if(((ev.target.getAttribute('site') ==null && ev.target.parentNode.getAttribute('site') ==null)
-									|| ev.target.getAttribute('site')==$LSettings || ev.target.parentNode.getAttribute('site')==$LSettings)
-										&& !/PDF|DOC/.test(ev.target.getAttribute('value'))) return;
-								console.log('clic:',i,bI,ev, ev.target.className, inputSearch.value, this.form)
+								if(((t.getAttribute('site') ==null && t.parentNode.getAttribute('site') ==null)
+									|| t.getAttribute('site')==$LSettings || t.parentNode.getAttribute('site')==$LSettings)
+										&& !/PDF|DOC/.test(t.getAttribute('value'))) return;
+								//console.log('clic:',i,bI,ev, t.className, inputSearch.value, this.form)
 								inputSearch.value = inputSearch.value.replace(/ site\:[\w.]*$/ig, '')
 									.replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'') +' '+ (/PDF|DOC/.test(i) ? bI.url
-										: 'site:'+ (ev.target.getAttribute('site')||ev.currentTarget.getAttribute('site')||''));
-								if(/siteList|xButt/.test(ev.target.className)) this.form.submit();
+										: 'site:'+ (t.getAttribute('site')|| t.parentNode.getAttribute('site')||''));
+							if(/xButt|txt/.test(t.className) && !(i=='site' && !(/list/.test(t.parentNode.className) || /list/.test(t.parentNode.parentNode.className)))) buttSearch.click();
 							}: !bI.url ? function(ev){ //from-to date
-								var el = d.querySelector('#cdrlnk'), o;
+								var el = $q('#cdrlnk'), o;
 								el && el.dispatchEvent(((o = d.createEvent('Events')).initEvent('click', !0, !1), o));
 								$pd(ev);
 							}: function(ev){ //last interval
@@ -362,13 +364,13 @@ new Tout({t:120, i:8, m: 1.6
 						})(bI, i, iD),
 						mouseover: i =='site' || i.length ==2 ? (function(bI,i){return function(ev){
 							clearTimeout(bI.ww);
-							ev.currentTarget.querySelector('.list').style.display ='block';
+							$q('.list', ev.currentTarget).style.display ='block';
 						}})(bI,i) :'',
 						mouseout: i =='site' || i.length ==2 ? (function(bI,i){return function(ev){
 							var t = ev.currentTarget;
 							clearTimeout(bI.ww);
 							bI.ww = setTimeout(function(){
-								t.querySelector('.list').style.display ='none';
+								$q('.list',t).style.display ='none';
 							}, 450);
 						}})(bI,i) :'',
 						change: saveLocStor
@@ -405,7 +407,7 @@ new Tout({t:120, i:8, m: 1.6
 											return s +'<option value=""'+ (lang==''?' selected':'') +'>en w/o hints</option>'})()
 										+'</select><br>'
 										+'<input type="checkbox" class="less" id="hoursLess"'+ (S.lastHoursLess ?' checked':'') +'/>'
-											+'<label for="hoursLess">'+ $L['Less positions at the end of selects'] +'</label><br>'
+											+'<label for="hoursLess" id="hoursLessL">'+ $L['Less positions at the end of selects'] +'</label><br>'
 										+'<i><a href="#" class="defa" style="float: right">Default settings</a></i>'
 										+$L.Sites +': <br><textarea class="sites" style="width:97%" rows=8>'
 											+ strSites +'</textarea><br>'
@@ -414,7 +416,15 @@ new Tout({t:120, i:8, m: 1.6
 									+'</div>')}
 							,cs: {position: sI != $LSettings ?'static':'absolute',display:'block', width:'auto', height: sI != $LSettings ?'18px':'16px'
 								,margin:'2px 0 -1px -13px', padding:0, textAlign:'left', fontWeight:'normal', opacity:1}
-							,on:{click: function(ev){$pd(ev)}}
+							,on:{click: function(ev){
+								//console.log('c3',ev.target.outerHTML);
+								var chk = $q('#hoursLess');
+								if(chk && /hoursLess/.test(ev.target.id)){
+									chk.outerHTML = '<input type="checkbox" class="less" id="hoursLess"'
+											+(chk.getAttribute('checked')!=null ?'':' checked="checked"')+'>';
+									saveLocStor();
+								}
+								$pd(ev);}}
 							,apT: siteList
 						});
 				siteList.style.height ='auto'; siteList.style.textAlign ='center';
@@ -435,14 +445,14 @@ new Tout({t:120, i:8, m: 1.6
 			,cB: function(prev){
 				console.info('Settings are saved. prev=', prev);}
 		});
-		d.querySelector('.siteList .settIn').classList.add('changed');
+		$q('.siteList .settIn').classList.add('changed');
 	};
 
 })({ //write "lang:''," to remove hints; 'en' for English hints (fr - Français, es - espagnol), 'ru' for Russian
 	lang:''|| (navigator.languages && navigator.languages[1] || navigator.language.substr(0,2)) //='' if hide hints, or 2 letters from $l{}
 	,sites: [ //=array or one site in string
-		'slashdot.org','engadget.com','techcrunch.com','habrahabr.ru','geektimes.ru'
-		,'smashingmagazine.com','maketecheasier.com'] //write your favorite sites
+		'','slashdot.org','reddit.com','techcrunch.com','habrahabr.ru','geektimes.ru'
+		,'smashingmagazine.com','engadget.com'] //write your favorite sites
 	,lastHoursLess: 1 //=boolean - not show odd some values of hours after 8 h
 	,dwmyh: [1,1,1,1,1] //=array of numbers - current vals of days, weeks, months, years, hours
 });
