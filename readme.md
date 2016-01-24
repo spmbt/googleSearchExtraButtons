@@ -2,21 +2,23 @@
 
 [(show this instruction **in Russian**)](readmeRu.md)
 
-Add buttons of customized search to results page of Google.<br>
+Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
+
+2016-01-17: fix autostart after select of site; switch of checkbox.
 
 Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en/scripts/7543-google-search-extra-buttons)
 
-* Fx - script installed by Scriptish/GreaseMonkey (addons for userscripts);
-* Chrome - immediately (on the page chrome://extensions/ it placed as unpacked script in "developer mode"; directory sholuld be contain manifest.json; or by other methods);
+* Fx - script installed by GreaseMonkey/Scriptish (addons for userscripts);
+* Chrome - immediately (on the page chrome://extensions/ it placed as unpacked script in "developer mode"; directory sholuld be contain manifest.json; or by other methods (Tampermonkey));
 * Opera 12- - save userscript in file placed in Opera directory... ( there are instructions );
 * Safari - installed by Tampermonkey for Safari.
 
 Script adds 8 types of buttons that doubled links hidden in:
 
-* change interface language (en(default), fr, ru, es) in Settings area;
-* search PDF docs;
-* search in site (from list; if no list in settings (or commented), this button is not displayed);
+* change interface language (en(default), fr, ru, de, es) in Settings area;
+* search PDF, DOC docs;
+* search in site (from list; if no list in settings (or commented in code), this button is not displayed);
 * write list of your favorite sites in code (example: ['slashdot.org','digg.com']);
 * search in interval of dates (fast opening of Google inteface);
 * search for 1,2..13 last days;
@@ -28,8 +30,6 @@ Script adds 8 types of buttons that doubled links hidden in:
 * remove lang in settings for no hints (interface language will be English).
 * save settings (language and sites list) in the external localStorage (google clean own storage), copy list as text.
 * keep type of current page ('tbm=' parameter) - news, pictures, video etc.
-
-2016-01-17: fix autostart after select of site; switch of checkbox.
 
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
