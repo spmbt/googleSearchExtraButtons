@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version     19.2016.1.17
+// @version     21.2016.12.7
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -54,6 +54,8 @@ var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===ex
 	if(o){ //execute if exist
 		if(g.cl)
 			o.className = g.cl;
+		if(g.clRemove)
+			o.classList.remove(g.clRemove);
 		if(g.clAdd)
 			o.classList.add(g.clAdd);
 		if(g.cs)
@@ -268,16 +270,18 @@ var Tout = function(h){
 	}}; //if !lang, then no hints
 addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display: block}'
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
-	+'.lsbb .xButt,.lsbb >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
+	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
 		+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff; opacity: 0.64}'
-	+'.lsbb >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
-	+'.lsbb >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover{opacity: 1; color:#fff}'
+	+'.lsbb >.siteList,.sbibod >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
+	+'.lsbb >.siteList .lsb,.sbibod >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover,.sbibod .lsb:hover{opacity: 1; color:#fff}'
 	+'.siteList .sett .txt{padding: 0 2px}'
 	+'.siteList .settIn{display: none; width: 250px; padding: 2px 4px; text-align:left; border:1px solid #48f;'
 		+'background-color:#eef; color:#336}'
 	+'.siteList .settIn hr{margin:2px 0}'
 	+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
-		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}');
+		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}'
+	+'div.gb_g[aria-label="promo"]{display: none}'
+	+'.srp #sfdiv{overflow: inherit}'); //hide promo
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
 	S = prev || setts;
 	S.dwmyh = S.dwmyh || setts.dwmyh; //temp. transitional expr.
@@ -304,7 +308,8 @@ new Tout({t:120, i:8, m: 1.6
 			sites.push($LSettings)
 		var mainPg = /\/search\?/.test(lh)
 			,inputSearch = this.dat
-			,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0]
+			,design1612 = $q('#_fZl') || $q('.sbico-c')
+			,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0] || design1612
 			,buttS ={
 				PDF:{url:'filetype:pdf', txt:$L['search in PDF files']}
 				,site:{url:'site:'+ S.sites[0], txt:$L['search in']+' '+ S.sites[0], one:'day'} //you may comment this line
@@ -323,16 +328,15 @@ new Tout({t:120, i:8, m: 1.6
 			var bI = buttS[i]
 				,Gesch = ({m:'letzter',f:'letzte',n:'letztes'})['m,f,m,n,f'.split(',')[iD]]
 				,hint = function(j){return (j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]) }
+				,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 ?{right: -a+33+'px'}:{left: a+'px'}}
 				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
-						: i !='.. : ..'|| mainPg ? buttSearch : $e({cl: 'siteList hiddn'})
-					,clAdd:'xButt'
-					,atRemove: ['id', 'name']
+						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt' +(design1612 ?'':' lsb')}) : $e({cl: 'siteList hiddn'})
 					,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
 						,innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
 								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['last'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')+'">'
 							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
-					,cs: {position: 'absolute', top: '33px', left: (-127 + 37 * (ii++ - (ii >2 && !mainPg))) +'px'}
+					,cs: $x({position:'absolute', top:'33px'}, csLeft(++ii))
 					,on: {click: (function(bI, i, iD){
 						return /PDF|DOC|site/.test(i)
 							? function(ev){
@@ -388,10 +392,8 @@ new Tout({t:120, i:8, m: 1.6
 				for(var j in list) if(j !=0 || iD!=-1 && S.dwmyh[iD] !=1)
 					var sI = list[j]
 						,butt3 = $e({clone: sI==$LSettings
-								? $e({cl: 'sett lsb'})
-								: buttSearch
-							,clAdd:'xButt'
-							,atRemove:['id','name']
+								? $e({cl: 'sett' +(design1612 ?' xButt':' lsb')})
+								: $e({el:'button', cl: 'xButt' +(design1612 ?'':' lsb')})
 							,at:{value: sI
 								,site: sI
 								,date: bI.url
@@ -414,7 +416,7 @@ new Tout({t:120, i:8, m: 1.6
 										+'<a class="reload" href=# onclick="location.reload();return!1">'
 											+ $L['reload page for effect'] +'</a>'
 									+'</div>')}
-							,cs: {position: sI != $LSettings ?'static':'absolute',display:'block', width:'auto', height: sI != $LSettings ?'18px':'16px'
+							,cs: {position: sI != $LSettings || design1612 ?'static':'absolute',display:'block', width: sI != $LSettings ?'auto': /en|es/.test(lang)||!lang ?'4em':'6.2em', height: sI != $LSettings ?'18px':'16px'
 								,margin:'2px 0 -1px -13px', padding:0, textAlign:'left', fontWeight:'normal', opacity:1}
 							,on:{click: function(ev){
 								//console.log('c3',ev.target.outerHTML);

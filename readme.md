@@ -6,6 +6,7 @@ Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
 2016-01-17: fix autostart after select of site; switch of checkbox.
+2016-12-07: fixes for compatibility of new design of input fields; old format is supported also.
 
 Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en/scripts/7543-google-search-extra-buttons)
 

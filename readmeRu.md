@@ -5,6 +5,7 @@
 (Fx, Chrome, Opera12, Safari)
 
 17 янв. 2016: поправлен авто-запуск поиска по сайту после выбора варианта; переключение чекбокса.
+7 дек. 2016: совместимость с новым дизайном поля ввода, его классов; старый формат тоже поддерживается.
 
 * Fx - ставится с помощью Scriptish/GreaseMonkey (аддоны для скриптов);
 * Chrome - непосредственно, без расширений (на странице chrome://extensions/ ставится как распакованный скрипт в "режиме разработчика"; в папке должен быть [manifest.json](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/manifest.json), переименуйте на "js": "Google_Search_Extra_Buttons.user.js" или подобное, если необходимо; или другими способами (TamperMonkey));
