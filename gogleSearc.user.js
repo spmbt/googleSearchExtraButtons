@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version     21.2016.12.7
+// @version     22.2016.12.12
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -270,8 +270,12 @@ var Tout = function(h){
 	}}; //if !lang, then no hints
 addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display: block}'
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
-	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
-		+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff; opacity: 0.64}'
+	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px;'
+		+'padding:0 2px; line-height:14px; font-size:14px; border:1px solid transparent; border-radius:2px;'
+		+'background-color:#dddae6; color:#eee; opacity: 0.4; transition:.4s}'
+	+'.xButt2{padding:0 0 2px; background-color:#dad6e2; color:#eee; opacity: 1}'
+	+'.lsbb .xButt:hover,.sbibod .xButt:hover,.xButt.xButt2:hover .xButt2,.xButt2:hover{background-color:#cac6d2; color:#fff; opacity: 1}'
+	+'.lsbb >.siteList:hover,.sbibod >.siteList:hover{background-color:#cac6d2; color:#fff; opacity: 1}'
 	+'.lsbb >.siteList,.sbibod >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
 	+'.lsbb >.siteList .lsb,.sbibod >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover,.sbibod .lsb:hover{opacity: 1; color:#fff}'
 	+'.siteList .sett .txt{padding: 0 2px}'
@@ -280,7 +284,7 @@ addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display
 	+'.siteList .settIn hr{margin:2px 0}'
 	+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}'
-	+'div.gb_g[aria-label="promo"]{display: none}'
+	+'div.gb_g[aria-label="promo"]{display: none}.rhsvw{opacity:.16; transition:.4s}.rhsvw:hover{opacity:1}'
 	+'.srp #sfdiv{overflow: inherit}'); //hide promo
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
 	S = prev || setts;
@@ -292,7 +296,8 @@ new Tout({t:120, i:8, m: 1.6
 		return d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
 	occur: function(){
-		var lang = S.lang != null && S.lang || setts.lang
+		console.log('S.lang', S.lang, setts.lang)
+		var lang = S.lang != null ? S.lang : setts.lang
 			,sites = S.sites && (S.sites.length && S.sites[0] || S.sites.length >1) && S.sites
 				|| typeof sites =='string'&& [sites] || !S.sites && setts.sites || null;
 		var strSites = sites && sites.join('\n').replace(/^\n/,'\n\n') ||''
@@ -331,11 +336,11 @@ new Tout({t:120, i:8, m: 1.6
 				,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 ?{right: -a+33+'px'}:{left: a+'px'}}
 				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
-						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt' +(design1612 ?'':' lsb')}) : $e({cl: 'siteList hiddn'})
+						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt ' +(design1612 ?'xButt2':'lsb')}) : $e({cl: 'siteList hiddn'})
 					,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
-						,innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
+						,innerHTML: '<div'+ (design1612 ?' class=xButt2':'') +'><span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
 								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['last'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')+'">'
-							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
+							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span></div>'}
 					,cs: $x({position:'absolute', top:'33px'}, csLeft(++ii))
 					,on: {click: (function(bI, i, iD){
 						return /PDF|DOC|site/.test(i)
@@ -430,6 +435,7 @@ new Tout({t:120, i:8, m: 1.6
 							,apT: siteList
 						});
 				siteList.style.height ='auto'; siteList.style.textAlign ='center';
+				console.log('lang', lang)
 			}
 		}
 	}
