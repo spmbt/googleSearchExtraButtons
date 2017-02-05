@@ -4,8 +4,9 @@
 
 (Fx, Chrome, Opera12, Safari)
 
-17 янв. 2016: поправлен авто-запуск поиска по сайту после выбора варианта; переключение чекбокса.
+12 дек. 2016: серый дизайн кнопок на новом дизайне поиска Гугла.
 7 дек. 2016: совместимость с новым дизайном поля ввода, его классов; старый формат тоже поддерживается.
+17 янв. 2016: поправлен авто-запуск поиска по сайту после выбора варианта; переключение чекбокса.
 
 * Fx - ставится с помощью Scriptish/GreaseMonkey (аддоны для скриптов);
 * Chrome - непосредственно, без расширений (на странице chrome://extensions/ ставится как распакованный скрипт в "режиме разработчика"; в папке должен быть [manifest.json](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/manifest.json), переименуйте на "js": "Google_Search_Extra_Buttons.user.js" или подобное, если необходимо; или другими способами (TamperMonkey));
@@ -43,4 +44,9 @@ Github: https://github.com/spmbt/googleSearchExtraButtons .
 **Версия 9 сент. 2015: больше кнопок:**
 
 ![Версия 9 сент. 2015: больше кнопок](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/20150909-googleSearchExtra123week.png)
- 
+
+**Версия 12 дек. 2016: новый дизайн Гугла и кнопок:**
+
+![Версия 12 дек. 2016: новый дизайн Гугла и кнопок](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchNewDesign3.png)
+
+![Версия 12 дек. 2016: новый дизайн - главная](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchStartNewDes3.png)

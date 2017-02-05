@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version     21.2016.12.7
+// @version     23.2017.2.4
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -203,6 +203,7 @@ var Tout = function(h){
 		,'reload page for effect':'перезагрузить страницу'
 		,'Interface language':'Язык интерфейса'
 		,'Less positions at the end of selects':'Меньше выбора в конце селектов'
+        ,'Gray design of buttons':'Серый дизайн кнопок'
 		,'Sites':'Сайты'
 	},fr:{
 		'search in PDF files':'la recherche dans les fichiers PDF'
@@ -224,6 +225,7 @@ var Tout = function(h){
 		,'reload page for effect':'recharger la page pour effet'
 		,'Interface language':'Langue de l\'interface'
 		,'Less positions at the end of selects':'Moins de choix les longues listes'
+        ,'Gray design of buttons':'Gris design des boutons'
 		,'Sites':'Les sites'
 	},de:{
 		'search in PDF files':'Suche in PDF-Dateien'
@@ -245,6 +247,7 @@ var Tout = function(h){
 		,'reload page for effect':'Seite neu laden'
 		,'Interface language':'Sprache'
 		,'Less positions at the end of selects':'Weniger Auswahl in langen Listen'
+        ,'Gray design of buttons':'Graues Design der Schaltflächen'
 		,'Sites':'Websites'
 	},es:{
 		'search in PDF files':'búsqueda en archivos PDF'
@@ -266,33 +269,43 @@ var Tout = function(h){
 		,'reload page for effect':'página para efecto de recargar'
 		,'Interface language':'Idioma de interfaz'
 		,'Less positions at the end of selects':'Menos elección en listas largas'
+		,'Gray design of buttons':'Diseño gris de botones'
 		,'Sites':'Sitios'
 	}}; //if !lang, then no hints
 addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display: block}'
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
-	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px; padding:0 2px; line-height:14px;'
-		+'font-size:14px; border:1px solid transparent; background-color:#4889f1; color:#fff; opacity: 0.64}'
+	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px;'
+		+'padding:0 2px; line-height:14px; font-size:14px; border:1px solid transparent; border-radius:2px;'
+		+'background-color:#dddae6; color:#eee; opacity: 0.45; transition:.4s}'
+    +'.lsbb .xButt:not(.xButt2),.sbibod .xButt:not(.xButt2),.lsbb >.siteList{background-color:#4889f1; color:#fff; opacity: 0.64}'
+	+'.xButt2{padding:0 0 2px; background-color:#dad6e2; color:#eee; opacity: 1}'
+	+'.lsbb .xButt:hover,.sbibod .xButt:hover,.xButt.xButt2:hover .xButt2,.xButt2:hover{background-color:#cac6d2; color:#fff; opacity: 1}'
+	+'.lsbb >.siteList:hover{background-color:#4889f1}'
 	+'.lsbb >.siteList,.sbibod >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
 	+'.lsbb >.siteList .lsb,.sbibod >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover,.sbibod .lsb:hover{opacity: 1; color:#fff}'
-	+'.siteList .sett .txt{padding: 0 2px}'
-	+'.siteList .settIn{display: none; width: 250px; padding: 2px 4px; text-align:left; border:1px solid #48f;'
+	+'.sbibod >.siteList:hover,.lsbb >.siteList >div:not([class]):hover{background-color:#dad6e2; opacity:.91}'
+	+'.sbibod:not(.lsbb) >.siteList{background-color:#dddae6; opacity:.45}.sbibod.lsbb{height:44px}'
+	+'.sbibod >.siteList >.list{background-color:#e1deeb}'
+	+'.siteList .sett .txt{padding:2px 2px 4px; font-size: 14px}'
+	+'.lsbb >.siteList .sett .txt{background-color:#4889f1}'
+	+'.siteList .settIn{display: none; width: 250px; padding: 2px 4px; text-align:left; border:1px solid #48f; font-size: 14px;'
 		+'background-color:#eef; color:#336}'
 	+'.siteList .settIn hr{margin:2px 0}'
 	+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}'
-	+'div.gb_g[aria-label="promo"]{display: none}'
+	+'div.gb_g[aria-label="promo"],.pdp-psy.og-pdp{display: none}.rhsvw{opacity:.16; transition:.4s}.rhsvw:hover{opacity:1}'
 	+'.srp #sfdiv{overflow: inherit}'); //hide promo
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
 	S = prev || setts;
 	S.dwmyh = S.dwmyh || setts.dwmyh; //temp. transitional expr.
 	console.timeStamp = function(){};
 
-new Tout({t:120, i:8, m: 1.6
+new Tout({t:120, i:12, m: 1.6
 	,check: function(){
 		return d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
 	occur: function(){
-		var lang = S.lang != null && S.lang || setts.lang
+		var lang = S.lang != null ? S.lang : setts.lang
 			,sites = S.sites && (S.sites.length && S.sites[0] || S.sites.length >1) && S.sites
 				|| typeof sites =='string'&& [sites] || !S.sites && setts.sites || null;
 		var strSites = sites && sites.join('\n').replace(/^\n/,'\n\n') ||''
@@ -306,9 +319,10 @@ new Tout({t:120, i:8, m: 1.6
 		var $LSettings = $L['Settings'];
 		if(sites && sites.length)
 			sites.push($LSettings)
-		var mainPg = /\/search\?/.test(lh)
+		var mainPg = /\/search\?|&q=|#q=/.test(lh)
 			,inputSearch = this.dat
 			,design1612 = $q('#_fZl') || $q('.sbico-c')
+			,d16 = design1612 && S.design1612
 			,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0] || design1612
 			,buttS ={
 				PDF:{url:'filetype:pdf', txt:$L['search in PDF files']}
@@ -321,6 +335,8 @@ new Tout({t:120, i:8, m: 1.6
 				,'1H':{url:'&tbs=qdr:h', txt:$L['last'][0] +' '+ $L['hour'], one:'hour', up:23,lett:'H'}
 				,DOC:{url:'filetype:doc', txt:$L['search in PDF files'].replace(/PDF/,'DOC')}
 		}, ii = 0, iD = -1;
+		if(design1612 && !d16)
+			buttSearch.parentNode.className +=' lsbb';
 		!sites && delete buttS.site;
 		buttSearch.parentNode.style.position ='relative';
 		if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
@@ -331,11 +347,11 @@ new Tout({t:120, i:8, m: 1.6
 				,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 ?{right: -a+33+'px'}:{left: a+'px'}}
 				,butt2 = $e({clone: i =='site'|| i.length ==2
 						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
-						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt' +(design1612 ?'':' lsb')}) : $e({cl: 'siteList hiddn'})
+						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt ' +(d16 ?'xButt2':'lsb')}) : $e({cl: 'siteList hiddn'})
 					,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
-						,innerHTML: '<span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
+						,innerHTML: '<div'+ (d16 ?' class=xButt2':'') +'><span class=txt onclick=this.parentNode.click();return!1 title="' +(lang || i=='site'|| i=='.. : ..'
 								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['last'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')+'">'
-							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span>'}
+							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i) +'</span></div>'}
 					,cs: $x({position:'absolute', top:'33px'}, csLeft(++ii))
 					,on: {click: (function(bI, i, iD){
 						return /PDF|DOC|site/.test(i)
@@ -392,8 +408,8 @@ new Tout({t:120, i:8, m: 1.6
 				for(var j in list) if(j !=0 || iD!=-1 && S.dwmyh[iD] !=1)
 					var sI = list[j]
 						,butt3 = $e({clone: sI==$LSettings
-								? $e({cl: 'sett' +(design1612 ?' xButt':' lsb')})
-								: $e({el:'button', cl: 'xButt' +(design1612 ?'':' lsb')})
+								? $e({cl: 'sett' +(d16 ?' xButt xButt2':' lsb')})
+								: $e({el:'button', cl: 'xButt' +(d16 ?' xButt2':' lsb')})
 							,at:{value: sI
 								,site: sI
 								,date: bI.url
@@ -410,6 +426,8 @@ new Tout({t:120, i:8, m: 1.6
 										+'</select><br>'
 										+'<input type="checkbox" class="less" id="hoursLess"'+ (S.lastHoursLess ?' checked':'') +'/>'
 											+'<label for="hoursLess" id="hoursLessL">'+ $L['Less positions at the end of selects'] +'</label><br>'
+										+'<input type="checkbox" class="des16" id="design1612"'+ (S.design1612 ?' checked':'') +'/>'
+											+'<label for="design1612" id="design1612L">'+ $L['Gray design of buttons'] +'</label><br>'
 										+'<i><a href="#" class="defa" style="float: right">Default settings</a></i>'
 										+$L.Sites +': <br><textarea class="sites" style="width:97%" rows=8>'
 											+ strSites +'</textarea><br>'
@@ -420,12 +438,16 @@ new Tout({t:120, i:8, m: 1.6
 								,margin:'2px 0 -1px -13px', padding:0, textAlign:'left', fontWeight:'normal', opacity:1}
 							,on:{click: function(ev){
 								//console.log('c3',ev.target.outerHTML);
-								var chk = $q('#hoursLess');
-								if(chk && /hoursLess/.test(ev.target.id)){
-									chk.outerHTML = '<input type="checkbox" class="less" id="hoursLess"'
-											+(chk.getAttribute('checked')!=null ?'':' checked="checked"')+'>';
-									saveLocStor();
-								}
+								var less = $q('#hoursLess')
+									,des16 = $q('#design1612');
+								if(less && /hoursLess/.test(ev.target.id)){
+									less.outerHTML = '<input type="checkbox" class="less" id="hoursLess"'
+											+(less.getAttribute('checked')!=null ?'':' checked="checked"')+'>';
+									saveLocStor();}
+								if(des16 && /design1612/.test(ev.target.id)){
+									des16.outerHTML = '<input type="checkbox" class="des16" id="design1612"'
+											+(des16.getAttribute('checked')!=null ?'':' checked="checked"')+'>';
+									saveLocStor();}
 								$pd(ev);}}
 							,apT: siteList
 						});
@@ -436,12 +458,13 @@ new Tout({t:120, i:8, m: 1.6
 });
 
 }, el: d.body});
-	var saveLocStor = function(ev, val, do2){ var aaa,aab,aac, t = ev && ev.target.form || document.documentElement || document.body;
+	var saveLocStor = function(ev, val, do2){ var aaa,aab,aac,aad, t = ev && ev.target.form || document.documentElement || document.body;
 		xLocStor({do: do2 ||'set', key:'sett'
 			, val:{lang: (aaa=d.querySelectorAll('.lang', t))[aaa.length-1].value
 				,sites: (aab=d.querySelectorAll('.sites', t))[aab.length-1].value.replace(/^[ \t]*|[ \n\t]*$/g,'')
 						.split('\n')
 				,lastHoursLess: (aac=d.querySelectorAll('.less', t))[aac.length-1].checked
+				,design1612: (aad=d.querySelectorAll('.des16', t))[aad.length-1].checked
 				,dwmyh: S.dwmyh || setts.dwmyh
 			}
 			,cB: function(prev){
@@ -455,6 +478,7 @@ new Tout({t:120, i:8, m: 1.6
 	,sites: [ //=array or one site in string
 		'','slashdot.org','reddit.com','techcrunch.com','habrahabr.ru','geektimes.ru'
 		,'smashingmagazine.com','engadget.com'] //write your favorite sites
+	,design1612: 1 //=boolean - new gray design
 	,lastHoursLess: 1 //=boolean - not show odd some values of hours after 8 h
 	,dwmyh: [1,1,1,1,1] //=array of numbers - current vals of days, weeks, months, years, hours
 });

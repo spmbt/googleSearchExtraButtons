@@ -5,8 +5,9 @@
 Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
-2016-01-17: fix autostart after select of site; switch of checkbox.
+2016-12-12: gray design of buttons on the pages with new desing of Google.
 2016-12-07: fixes for compatibility of new design of input fields; old format is supported also.
+2016-01-17: fix autostart after select of site; switch of checkbox.
 
 Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en/scripts/7543-google-search-extra-buttons)
 
@@ -43,3 +44,9 @@ Screenshots:
 ![List for search in sites in dark header style of page](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchExtraButt20150218-dark.png)
 
 ![Version from 9/9/2015: more buttons](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/20150909-googleSearchExtra123week.png)
+
+**Version from 12/12/2016: new design of Google search page and new design of exta buttons:**
+
+![Version from 12/12/2016: new design of Google search](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchNewDesign3.png)
+
+![Version from 12/12/2016: new 3rd design - main page](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchStartNewDes3.png)
