@@ -3,7 +3,7 @@
 // @name:ru     GoogleSearchExtraButtons
 // @description Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version     23.2017.2.4
+// @version     24.2017.3.11
 // @namespace   spmbt.github.com
 // @include     http://www.google.*/search*
 // @include     https://www.google.*/search*
@@ -44,11 +44,11 @@ if(location.host=='spmbt.github.io'){
 
 var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===extend===
 	,$pd = function(ev){ev.preventDefault();}
-	,$q = function(q, el){return (el||document).querySelector(q)}
-	,lh = location.href
 	,d = document
-,$e = function(g){ //===create or use existing element=== //g={el|clone,cl,ht,cs,at,atRemove,on,apT}
-	g.el = g.el || g.clone ||'DIV';
+	,$q = function(q, el){return (el||d).querySelector(q)}
+	,lh = location.href
+,$e = function(g,el){ //===create or use existing element=== //g={el|clone,cl,ht,cs,at,atRemove,on,apT}
+	g.el = el || g.el || g.clone ||'DIV';
 	var o = g.o = g.clone && g.clone.cloneNode && g.clone.cloneNode(!0)
 			|| (typeof g.el =='string' ? d.createElement(g.el) : g.el);
 	if(o){ //execute if exist
@@ -77,30 +77,9 @@ var $x = function(el, h){if(h) for(var i in h) el[i] = h[i]; return el;} //===ex
 	}
 	return o;
 },
-addRules = function(css){
-	var heads = d.getElementsByTagName('head')
-		,node = d.createElement('style');
-	heads.length && heads[0].appendChild(node);
-	node.appendChild(d.createTextNode(css));
-};
-/**
- * check occurrence of third-party event with growing interval
- * @constructor
- * @param{Number} h.t start period of check
- * @param{Number} h.i number of checks
- * @param{Number} h.m multiplier of period increment
- * @param{Function} h.check event condition
- * @param{Function} h.occur event handler
- */
-var Tout = function(h){
-		var th = this;
-		(function(){
-			if((h.dat = h.check() )) //wait of positive result, then occurs
-				h.occur();
-			else if(h.i-- >0) //next slower step
-				th.ww = setTimeout(arguments.callee, (h.t *= h.m) );
-		})();
-	}
+addRules = function(css){$e({apT: d.getElementsByTagName('head')[0], ap: d.createTextNode(css)},'style')},
+//check occurrence of third-party event with growing interval: h.t=time, h.i=count, h.c=check, h.o=occur, h.m=multi
+CS = function(h,d){d?h.o(d):h.i--&&setTimeout(function(){CS(h,h.c())},h.t*=h.m)} //example: t:120, i:12, m: 1.6 => wait around 55 sec
 //for xLocStor:
 	,xLocStorOrigin = d.location.protocol +'//spmbt.github.io'
 	,qr, qrs ={} //set of queries "key-calls" (ок, toutLitt, toutLong, noService, noStorage)
@@ -276,7 +255,7 @@ addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display
 	+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
 	+'.lsbb .xButt,.sbibod .xButt,.lsbb >.siteList,.sbibod >.siteList{z-index: 2002; width:34px; height:17px;'
 		+'padding:0 2px; line-height:14px; font-size:14px; border:1px solid transparent; border-radius:2px;'
-		+'background-color:#dddae6; color:#eee; opacity: 0.45; transition:.4s}'
+		+'background-color:#dddae6; color:#eee; opacity: 0.45; transition:.1s}'
     +'.lsbb .xButt:not(.xButt2),.sbibod .xButt:not(.xButt2),.lsbb >.siteList{background-color:#4889f1; color:#fff; opacity: 0.64}'
 	+'.xButt2{padding:0 0 2px; background-color:#dad6e2; color:#eee; opacity: 1}'
 	+'.lsbb .xButt:hover,.sbibod .xButt:hover,.xButt.xButt2:hover .xButt2,.xButt2:hover{background-color:#cac6d2; color:#fff; opacity: 1}'
@@ -284,7 +263,7 @@ addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display
 	+'.lsbb >.siteList,.sbibod >.siteList{width:32px; height:auto; padding:1px 0 2px; text-align:center}'
 	+'.lsbb >.siteList .lsb,.sbibod >.siteList .lsb{font-weight: normal; color:#d4d4d4}.lsbb .lsb:hover,.sbibod .lsb:hover{opacity: 1; color:#fff}'
 	+'.sbibod >.siteList:hover,.lsbb >.siteList >div:not([class]):hover{background-color:#dad6e2; opacity:.91}'
-	+'.sbibod:not(.lsbb) >.siteList{background-color:#dddae6; opacity:.45}.sbibod.lsbb{height:44px}'
+	+'.sbibod:not(.lsbb) >.siteList{background-color:#dddae6; opacity:.45}.sbibod:not(.lsbb) >.siteList:hover{background-color:#dddae6; opacity:.87}.sbibod.lsbb{height:44px}'
 	+'.sbibod >.siteList >.list{background-color:#e1deeb}'
 	+'.siteList .sett .txt{padding:2px 2px 4px; font-size: 14px}'
 	+'.lsbb >.siteList .sett .txt{background-color:#4889f1}'
@@ -293,18 +272,18 @@ addRules('.hp .sfsbc,.sfsbc{display: inline-block}.siteList:hover button{display
 	+'.siteList .settIn hr{margin:2px 0}'
 	+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display: block}.siteList .settIn .reload, .siteList.hiddn{display: none}'
-	+'div.gb_g[aria-label="promo"],.pdp-psy.og-pdp{display: none}.rhsvw{opacity:.16; transition:.4s}.rhsvw:hover{opacity:1}'
+	+'div.gb_g[aria-label="promo"],.pdp-psy.og-pdp, .gb_Sc.gb_g .gb_ha, .gb_g.gb_ha{display: none}.rhsvw{opacity:.16; transition:.4s}.rhsvw:hover{opacity:1}'
 	+'.srp #sfdiv{overflow: inherit}'); //hide promo
 xLocStor({do:'get', key:'sett', val:setts, cB: function(prev,undef){
 	S = prev || setts;
 	S.dwmyh = S.dwmyh || setts.dwmyh; //temp. transitional expr.
 	console.timeStamp = function(){};
 
-new Tout({t:120, i:12, m: 1.6
-	,check: function(){
+CS({t:120, i:12, m: 1.6
+	,c: function(){
 		return d && d.getElementsByName('q') && d.getElementsByName('q')[0];
 	},
-	occur: function(){
+	o: function(dat){
 		var lang = S.lang != null ? S.lang : setts.lang
 			,sites = S.sites && (S.sites.length && S.sites[0] || S.sites.length >1) && S.sites
 				|| typeof sites =='string'&& [sites] || !S.sites && setts.sites || null;
@@ -320,7 +299,7 @@ new Tout({t:120, i:12, m: 1.6
 		if(sites && sites.length)
 			sites.push($LSettings)
 		var mainPg = /\/search\?|&q=|#q=/.test(lh)
-			,inputSearch = this.dat
+			,inputSearch = dat
 			,design1612 = $q('#_fZl') || $q('.sbico-c')
 			,d16 = design1612 && S.design1612
 			,buttSearch = d.getElementsByName("btnG") && d.getElementsByName('btnG')[0] || design1612

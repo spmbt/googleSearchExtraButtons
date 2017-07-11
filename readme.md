@@ -5,6 +5,7 @@
 Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
+2017-03-11: change constructor Tout() to short function SC() (decelerating timeout - refactoring).
 2016-12-12: gray design of buttons on the pages with new desing of Google.
 2016-12-07: fixes for compatibility of new design of input fields; old format is supported also.
 2016-01-17: fix autostart after select of site; switch of checkbox.
