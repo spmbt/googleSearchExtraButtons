@@ -4,9 +4,10 @@
 
 (Fx, Chrome, Opera12, Safari)
 
-11 мар. 2017: рефакторинг: замена конструктора Tout() на короткую функцию SC() (замедляющийся таймаут).
+12 дек. 2017: переходы в гаснущих колонках; небольшие правки стилей.<br>
+11 мар. 2017: рефакторинг: замена конструктора Tout() на короткую функцию SC() (замедляющийся таймаут).<br>
 12 дек. 2016: серый дизайн кнопок на новом дизайне поиска Гугла.
-7 дек. 2016: совместимость с новым дизайном поля ввода, его классов; старый формат тоже поддерживается.
+7 дек. 2016: совместимость с новым дизайном поля ввода, его классов; старый формат тоже поддерживается.<br>
 17 янв. 2016: поправлен авто-запуск поиска по сайту после выбора варианта; переключение чекбокса.
 
 * Fx - ставится с помощью Scriptish/GreaseMonkey (аддоны для скриптов);
@@ -46,8 +47,10 @@ Github: https://github.com/spmbt/googleSearchExtraButtons .
 
 ![Версия 9 сент. 2015: больше кнопок](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/20150909-googleSearchExtra123week.png)
 
-**Версия 12 дек. 2016: новый дизайн Гугла и кнопок:**
+**Версия 12 дек. 2017: новый (дек. 2016) дизайн Гугла и кнопок:**
 
-![Версия 12 дек. 2016: новый дизайн Гугла и кнопок](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchNewDesign3.png)
+*(с доработками 12 дек. 2017)*
 
-![Версия 12 дек. 2016: новый дизайн - главная](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/2016-12-12_searchStartNewDes3.png)
+![Версия 12 дек. 2017: синий дизайн](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearch-20171212.png)
+
+![Версия 12 дек. 2017: серый дизайн (по умолчанию)](https://raw.githubusercontent.com/spmbt/googleSearchExtraButtons/master/googleSearchGray-20171212.png)

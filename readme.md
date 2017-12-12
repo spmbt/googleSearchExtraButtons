@@ -5,9 +5,10 @@
 Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
-2017-03-11: change constructor Tout() to short function SC() (decelerating timeout - refactoring).
+2017-12-12: transitions in fading columns; some style modifications.<br>
+2017-03-11: change constructor Tout() to short function SC() (decelerating timeout - refactoring).<br>
 2016-12-12: gray design of buttons on the pages with new desing of Google.
-2016-12-07: fixes for compatibility of new design of input fields; old format is supported also.
+2016-12-07: fixes for compatibility of new design of input fields; old format is supported also.<br>
 2016-01-17: fix autostart after select of site; switch of checkbox.
 
 Hosting: [greasyfork.org: Google Search Extra Buttons](https://greasyfork.org/en/scripts/7543-google-search-extra-buttons)
