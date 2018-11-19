@@ -5,6 +5,7 @@
 Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
+2018-11-19: by changes of layout (classes and logic) of results page (TODO start page, 'pdf+enter+next' bug); _(when search with filetype:pdf then search by Enter key without pdf (appears 'filetype:pdf'))_
 2017-12-12: transitions in fading columns; some style modifications.<br>
 2017-03-11: change constructor Tout() to short function SC() (decelerating timeout - refactoring).<br>
 2016-12-12: gray design of buttons on the pages with new desing of Google.
