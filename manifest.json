@@ -7,14 +7,17 @@
 	,"https://www.google.*/*"
 	,"https://encrypted.google.*/search*"
 	,"https://encrypted.google.*/*"
-	,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"],
+	,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"
+	,"https://www.gstatic.com/index.html"
+	,"https://www.gstatic.com/sites/p/b9356d/system/services/test.html"
+	,"https://www.wikidata.org/wiki/Wikidata:Privacy_policy"],
 	"js": [ "Google_Search_Extra_Buttons.user.js" ],
 	"matches": [ "http://*/*", "https://*/*" ],
 	"run_at": "document_idle"
   } ],
   "converted_from_user_script": true,
-  "description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page",
+  "description": "Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page",
   "name": "GoogleSearchExtraButtons",
-  "version": "28.2018.4.6",
+  "version": "32.2018.11.20",
   "manifest_version": 2
 }
