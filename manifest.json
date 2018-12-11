@@ -1,20 +1,22 @@
 {
-  "content_scripts": [ {
-	"exclude_matches": [  ],
-	"include_globs": [
-	  "http://www.google.*/search*"
-	,"https://www.google.*/search*"
-	,"https://www.google.*/*"
-	,"https://encrypted.google.*/search*"
-	,"https://encrypted.google.*/*"
-	,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"],
-	"js": [ "Google_Search_Extra_Buttons.user.js" ],
-	"matches": [ "http://*/*", "https://*/*" ],
-	"run_at": "document_idle"
-  } ],
-  "converted_from_user_script": true,
-  "description": "Add buttons (last 1/2/3 days, weeks, PDF search etc.) for Google search page",
-  "name": "GoogleSearchExtraButtons",
-  "version": "28.2018.4.6",
-  "manifest_version": 2
+	"content_scripts": [ {
+		"exclude_matches": [  ],
+		"include_globs": [
+			"http://www.google.*/search*"
+		,"https://www.google.*/search*"
+		,"https://www.google.*/*"
+		,"https://encrypted.google.*/search*"
+		,"https://encrypted.google.*/*"
+		,"https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html"
+		,"https://www.gstatic.com/index.html"
+		,"https://www.gstatic.com/sites/p/b9356d/system/services/test.html"],
+		"js": [ "gogleSearc.user.js" ],
+		"matches": [ "http://*/*", "https://*/*" ],
+		"run_at": "document_idle"
+	} ],
+	"converted_from_user_script": true,
+	"description": "Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page",
+	"name": "GoogleSearchExtraButtons",
+	"version": "37.2018.12.11",
+	"manifest_version": 2
 }
