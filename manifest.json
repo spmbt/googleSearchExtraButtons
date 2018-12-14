@@ -17,6 +17,6 @@
 	"converted_from_user_script": true,
 	"description": "Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page",
 	"name": "GoogleSearchExtraButtons",
-	"version": "37.2018.12.11",
+	"version": "38.2018.12.14",
 	"manifest_version": 2
 }

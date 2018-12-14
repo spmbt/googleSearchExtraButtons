@@ -3,7 +3,7 @@
 // @name:ru GoogleSearchExtraButtons
 // @description Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version 37.2018.12.11
+// @version 38.2018.12.14
 // @namespace   spmbt.github.com
 // @include http://www.google.*/search*
 // @include https://www.google.*/search*
@@ -59,10 +59,6 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 			if(o){ //execute if exist
 				if(g.cl)
 					o.className = g.cl;
-				if(g.clRemove)
-					o.classList.remove(g.clRemove);
-				if(g.clAdd)
-					o.classList.add(g.clAdd);
 				if(g.cs)
 					$x(o.style, g.cs);
 				if(g.ht || g.at){
@@ -168,14 +164,14 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		},
 		chkErrMax = function(){if(!errIMax) console.error('Too many err messages:', errNMax)}
 		,fileType ='PDF,DOC,RTF,ODF,XLS,ODS,PPT,ODP,TXT,XML,More...,  KML,DWF,PS,WPM,BAS,C,CC,CPP,CXX,  Java,PL,PY,H,HPP,CS'
-			.split(/,\s*/).map(function(x){return '&nbsp; '+x+'&nbsp; '})
+			.split(/,\s*/).map(function(x){return '&nbsp;'+x+'&nbsp; '})
 		,isFTMore =0
-        ,meta={Goog:'',Duck:'',Bing:'',Ask:'',Baidu:'',Yandex:'',Mailru:'',SlideS:''} //will create child-tabs (window names)
-        ,imgFile='SVG,JPG,GIF,PNG,BMP,webp,ICO,RAW'.split(',').map(function(x){return '&nbsp; '+x+'&nbsp; '}) //will switch to Img Search
-        ,imgType='face,clipart,photo,lineart,animated'.split(',') //for Img Search (+imgColor,imgSize,imgSizeLt)
-        ,imgColor='red,orange,yellow,green,teal,blue,purple,pink,white,gray,black,brown'.split(',')
-        ,imgSize='l,m,small,icon,>=,Exact...'.split(',')
-        ,imgSizeLt='vga,svga,xga,2mp,4mp,qsvga'.split(',')
+		,meta={Goog:'',Duck:'',Bing:'',Ask:'',Baidu:'',Yandex:'',Mailru:'',SlideS:''} //will create child-tabs (window names)
+		,imgFile='SVG,JPG,GIF,PNG,BMP,webp,ICO,RAW'.split(',').map(function(x){return '&nbsp;'+x+'&nbsp; '}) //will switch to Img Search
+		,imgType='face,clipart,photo,lineart,animated'.split(',') //for Img Search (+imgColor,imgSize,imgSizeLt)
+		,imgColor='red,orange,yellow,green,teal,blue,purple,pink,white,gray,black,brown'.split(',')
+	,imgSize='l,m,small,icon,>=,Exact...'.split(',')
+		,imgSizeLt='vga,svga,xga,2mp,4mp,qsvga'.split(',')
 		,$l ={ru:{
 			'search in PDF files':'поиск по документам PDF'
 			,'search in':'искать по'
@@ -282,14 +278,20 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		+'.lsbb .xButt,.lsbb >.siteList,.sbibod .xButt,.sbibod >.siteList   {z-index:2002; width:34px; height:17px;'
 			+'padding:0 2px; line-height:14px; font-size:14px; border:1px solid transparent; border-radius:2px;'
 			+'background-color:#dddae6; color:#eee; opacity:.07; transition:opacity .57s ease-in}'
+		+'.lsbb >.siteList:hover   {background-color:#4889f1}'
 		+'.lsbb >.siteList,.sbibod >.siteList   {width:32px; height:auto; padding:1px 0 2px; text-align:center}'
+		+'.lsbb >.siteList .lsb >.txt.or   {visibility:hidden; position:relative; left:3px; top:-2px; margin-left:-14px;'
+			+'font-size:9px; font-variant:small-caps; border:1px solid rgb(72, 137, 241); border-radius:8px;'
+			+'background-color:rgba(233, 238, 247, 0.66); color:rgb(131, 105, 68)}.lsbb >.siteList .lsb >.txt.or.sit   {left:-1px}'
+		+'.lsbb >.siteList .selted .lsb:not(.more):not(.moreShow):not(.sett):hover >.txt.or   {visibility:visible}'
+
 		//deprecated gray design
-		+'.lsbb .xButt:hover,.sbibod .xButt:hover,.xButt.xButt2:hover .xButt2,.xButt2:hover   {background-color:#c3d4e1; color:#fff; opacity:1}'
+		+'.lsbb .xButt:hover,.sbibod .xButt:hover,.xButt.xButt2:hover .xButt2,.xButt2:hover{background-color:#c3d4e1; color:#fff; opacity:1}'
 		+'.xButt2{padding:0 0 2px; background-color:#dad6e2; color:#eee; opacity:1}'
-		+'.sbibod .xButt:hover,.sbibod .xButt2:hover,.sbibod .xButt:hover .xButt2{background-color:#c3c6c7}.lsbb >.siteList:hover{background-color:#4889f1}'
+		+'.sbibod.lsbb{height:44px}'
+		+'.sbibod .xButt:hover,.sbibod .xButt2:hover,.sbibod .xButt:hover .xButt2{background-color:#c3c6c7}'
 		+'.sbibod:not(.lsbb) >.siteList, .sbibod:not(.lsbb) >.xButt2{background-color:#dddae6; opacity:.45}'
 		+'.sbibod:not(.lsbb) >.siteList:hover, .sbibod:not(.lsbb) >.xButt2:hover{background-color:#dddae6; opacity:.87}'
-		+'.sbibod.lsbb{height:44px}'
 		+'.sbibod >.siteList >.list{background-color:#e1deeb}'
 		+'.sbibod >.siteList.fade:hover{opacity:1; transition:opacity .1s ease-in}'
 		+'.sbibod >.siteList.fade{opacity:0.23}'
@@ -310,11 +312,11 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		+'.UUbT9 ul li div span b{background-color:rgba(237, 242, 248, 0.9); margin:0 -6px 0 -1px; padding:0 6px 0 1px}' //white under suggest texts
 		+'.gb_kb{padding-left:10px; padding-right:7px}form .RNNXgb{position:relative; background:rgba(255, 255, 255, 0.9)}'
 		+'.RNNXgb, #tsf{width:auto!important} #searchform form#tsf{max-width:auto} body div#searchform,body  .ctr-p{min-width:0}'
-	 	+'div#searchform.minidiv{top:-8px!important}.minidiv .sfbg{margin-top:-26px!important}' // for  narrow sticked searchbar
+		+'div#searchform.minidiv{top:-8px!important}.minidiv .sfbg{margin-top:-26px!important}' // for  narrow sticked searchbar
 		+'.minidiv .sfbg{top:-39px}.minidiv .sfbg +form#tsf{top:-39px}.minidiv .sfbg +form#tsf:hover{top:0}' //hide sticked
 		+'.minidiv .sfbg +form#tsf:hover .siteList, .minidiv .sfbg +form#tsf:hover .lsbb >.xButt{top:-6px!important}'
 		+'.RNNXgb .Tg7LZd{flex:0 0 auto; visibility:hidden; width:44px; height:44px; margin-right:-31px; padding:0 13px 0 0;'
-		+'     border-radius:0 8px 8px 0; background:transparent; border:none; outline:none}'
+		+'	 border-radius:0 8px 8px 0; background:transparent; border:none; outline:none}'
 		+'.A8SBwf .logo +.RNNXgb .Tg7LZd{visibility:visible; margin-right:-9px; margin-bottom:-2px; transition:margin 5s ease-in-out}');
 	//console.log('==cB-00');
 	try{xLocStor({do:'get', key:'sett', val:setts, cB: cB=function(prev,undef){
@@ -326,17 +328,17 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		addRules(!(S.whiteMintOval || S.whiteMintOval===undefined) ? //blue old design
 		'.lsbb .xButt:not(.xButt2),.lsbb >.siteList,.sbibod .xButt:not(.xButt2)   {text-align:center; background-color:#4889f1; color:#fff; opacity:0.75}'
 		+'.lsbb >.siteList .lsb,.sbibod >.siteList .lsb   {font-weight:normal; color:#d4d4d4}'
-		+'.lsbb .lsb:hover,.sbibod .lsb:hover   {opacity:1; color:#987b2b; cursor:default}'
+		+'.lsbb .lsb:hover,.sbibod .lsb:hover   {opacity:1; color:#f1c44a; cursor:default}'
 		+'.lsbb >.siteList >div:not([class]):hover,.sbibod >.siteList:hover   {background-color:#c2d4e0; color:#f7f7f7; opacity:.93}'
 		+'.lsbb >.siteList >div:not([class]):hover span   {color:#aa6c1c}'
 		+'.lsbb >.siteList .sett .txt{background-color:#4889f1}'
 		//white-mint-oval design
 		:'.lsbb .xButt:not(.xButt2), .lsbb >.siteList   {text-align:center; background-color:rgb(240, 247, 248); opacity:0.75; color:rgb(137, 137, 137)}'
-		+'.lsbb >.siteList   {border: 1px solid rgb(183, 219, 205); border-radius: 10px; background-color: rgba(243, 243, 243, 0.69); color:rgb(75, 143, 231)}'
+		+'.lsbb >.siteList   {border:1px solid rgb(183, 219, 205); border-radius:10px; background-color:rgba(243, 243, 243, 0.69); color:rgb(75, 143, 231)}'
 		+'.lsbb >.siteList .lsb   {font-weight:normal; border:1px solid rgb(210, 210, 190); border-radius:10px; background-color:rgb(225, 239, 239); color:rgb(140, 140, 140)}'
 		+'.lsbb .lsb:hover   {opacity:1; color:rgb(152, 123, 43); cursor:default}'
 		+'.lsbb >.siteList:hover   {background-color:rgb(183, 219, 205)}'
-		+'.lsbb .xButt:hover   {background-color: rgb(221, 230, 228)}'
+		+'.lsbb .xButt:hover   {background-color:rgb(221, 230, 228)}'
 		+'.lsbb >.siteList >div:not([class]):hover span   {color:rgb(170, 108, 28)}'
 		+'.lsbb >.siteList .sett .txt   {position:relative; top:2px; margin:0 -2px; padding:1px 3px;' +
 			'border:1px solid rgb(207, 207, 207); border-radius:10px; background-color:rgb(234, 237, 248)');
@@ -411,12 +413,12 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : imgSrch && i=='PDF' ?'WxH': i) +(isWHShown2?'/s>':'</span>')+'</div>'}
 						,cs: $x({position:'absolute', top:startPg ?'40px':'33px',wordSpacing:'-1px', visibility: ii < S.hiddenEdgeLeft || startPg && ii==2 ?'hidden':'visible'}, csLeft(++ii))
 						,on: {click: (function(bI, i, iD){
-							//console.log('clic0:', i, iD);
+							console.log('clic0:', i, iD);
 							return /Srch|PDF|DOC|site/.test(i)
 								? function(ev){
 									var t = ev.target;
-									//console.log('cli-DocSite: i,t.class,value,ev,attrSite,$LS,aPSite,bSSta',i, t.className, inputSearch.value,ev, 'attrSite:'
-									//	,t.getAttribute('site'),'aP:', t.parentNode.getAttribute('site'), buttSearcStart);
+									console.log('cli-DocSite: i,t.class,value,ev,attrSite,$LS,aPSite,bSSta',i, t.className, inputSearch.value,ev, 'attrSite:'
+										,t.getAttribute('site'),'aP:', t.parentNode.getAttribute('site'), buttSearcStart);
 									if(t && t.className =='defa')
 										saveLocStor('','','remove'); $pd(ev);
 									if(t && (t.getAttribute('site')==$LSettings || t.parentNode && t.parentNode.getAttribute('site')==$LSettings)
@@ -447,7 +449,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 											,tOvr = t && t.parentNode, tOv0 = tOvr
 											,date2 = tOvr.getAttribute('date');
 										var l2 = startPg ? lh.replace(/^([^/]*)\/\/([^/]+)\/?([^?#]*)([?#]?.*)/, '$1//$2/search$4') : lh; // insert '/search?' instead any
-										//console.log('cli-Past: value,date2,siteList,list,l2',inputSearch.value,date2,tOvr.classList.contains('siteList'), t.classList.contains('list'), l2);
+										console.log('cli-Past: value,date2,siteList,list,l2',inputSearch.value,date2,tOvr.classList.contains('siteList'), t.classList.contains('list'), l2);
 										if(tOvr.classList.contains('siteList') && !ta.classList.contains('list')){ //clicked by top button
 											var elTop = $q('div:not(.list) >.txt', tOvr) ||''
 												,itrvNum = elTop && elTop.getAttribute('itrvNum') ||''
@@ -464,7 +466,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 											if(sa.length <=6)
 												S.dwmyh[iD] = +sa;
 										}
-										//console.log('==noDocNoSite', tOvr.value, itrvNum);
+										console.log('==noDocNoSite', tOvr.value, itrvNum);
 										$pd(ev);
 										ev.stopPropagation();
 										saveLocStor();
@@ -490,6 +492,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 					});
 					bI.el = butt2;
 					if(i =='site' || i.length ==2 || i =='PDF'){ //dropdown lists under some buttons
+						//TODO 'list selted' will be placed if search by filetype or by site was presented (and accordingly buttons will be with 'selted')
 						var siteList = $e({cl:'list',cs:{display:'none'}, apT: butt2}), arr =[];
 						for(var j =0; j <= bI.up -1 -(i=='1W'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
 							if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
@@ -512,7 +515,10 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									,title: sI==$LSettings || !lang ?'':(/site|PDF/.test(i)
 										? ($L[i=='PDF'?'search in PDF files':'search in'] +(i=='PDF'?'':' '+ sI)).replace(/PDF/,fTyp)
 											: j==0 ? bI.txt : $L['past'][1] +' '+ sI).replace(/letzte/,Gesch)
-									,innerHTML:'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
+									,innerHTML: (/site|PDF/.test(i) ?'<span class="txt or'+(i=='PDF'?'':' sit')+'" data-val=""'+ sI.replace(/&nbsp; ?/g,'') +'" title="' //multiselect mechanics
+											+(1 ?(i=='PDF'?'':'sites ') +'multiselect'+ (i=='PDF'?' of types':''):'click to disable select')
+											+'">'+(1 ?'OR':'V')+'</span>':'')
+										+'<span class=txt>'+ sI +'</span>'+ (sI != $LSettings &&!(!S.sites && i =='1H')
 										?'':'<div class="settIn">'
 										+$L.Settings +' '+ $L['of userscript'] +'<br/>"Google Search Extra Buttons"<hr/>'
 										+$L['Interface language'] +': <select class="lang" style="width:70px">'
@@ -543,7 +549,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 										,des18 = $q('#whiteMintOval')
 										,itrv = t.getAttribute('date')||t.parentNode.getAttribute('date')||''
 										,num = (t.getAttribute('site')||t.parentNode.getAttribute('site')||'').replace(/\D/g,'');
-									//console.log('==clic3:t,itrv,num,fTyp,pdf:',t, itrv, num,'|',fTyp,pdf);
+									console.log('==clic3:t,itrv,num,fTyp,pdf:',t, itrv, num,'|',fTyp,pdf);
 									if(less && /hoursLess/.test(t.id)){
 										less.outerHTML = '<input type="checkbox" class="less" id="hoursLess"'
 											+(less.getAttribute('checked')!=null ?'':' checked="checked"')+'/>';
@@ -556,14 +562,16 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 										des18.outerHTML = '<input type="checkbox" class="des18" id="design1612"'
 											+(des18.getAttribute('checked')!=null ?'':' checked="checked"')+'/>';
 										saveLocStor();}
-									if(pdf || buttSearcStart && /site/.test(itrv)) {//console.log('==pdf|site');
-										inputSearch.value = inputSearch.value.replace(/ filetype(:|%3A)\s*\S*|$/
-											,fTMore ?'': ' '+ (imgSrch? itrv.toLowerCase() : itrv +(pdf ?'': fTyp)));}
+									if(pdf || /site/.test(itrv)) {console.log('==pdf|site');
+										inputSearch.value = inputSearch.value.replace(new RegExp('(?:(\\s+OR\\s+)?\\s*'
+											+(pdf ?'filetype':'site')+'(?::|%3A)\\s*\\S*)+|$','g')
+											,s1 => fTMore || s1 ?'':' '+ (imgSrch? itrv.toLowerCase() : itrv +(pdf ?'': fTyp)));}
 									var l2 = startPg ? lh.replace(/^([^/]*)\/\/([^/]+)\/?([^?#]*)([?#]?.*)/, '$1//$2/search$4') : lh // insert '/search?' instead any
 										,newSrch = /[?&]q=/.test(l2) ? l2.replace(/(&|\?)q=([^&]*)(&|$)/g,'$1q='+ encodeURIComponent(inputSearch.value) +'$3') //add value to '[?&]q=[^&]*'
 											: l2 + (/\?/.test(l2) ?'&':'?') +'q='+ encodeURIComponent(inputSearch.value); //set new value as &q=.+
-									//console.log('==inputSearch.value,newSrch,fTyp,pdf,num', inputSearch.value, newSrch, fTyp, pdf, num);
-									if(buttSearcStart && (pdf && !fTMore || num !==''&& num != +num)){buttSearcStart.click();ev.stopPropagation();return}
+									console.log('==inputSearch.value,newSrch,fTyp,pdf,num', inputSearch.value, newSrch, fTyp, pdf, num);
+									if(pdf && !fTMore || num !==''&& num != +num){ev.stopPropagation();}
+									if(buttSearcStart && (pdf && !fTMore || num !==''&& num != +num)){buttSearcStart.click();return}
 									if(layout1811 && num !==''|| pdf) {pdf && ev.stopPropagation();
 										if(!fTMore) location.href = /qdr(:|%3A)([dwmyh])\d*/.test(l2)
 											? newSrch.replace(/([?&]tbs=)?qdr(:|%3A)[dwmyh]\d*/
@@ -584,7 +592,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		});
 
 	}, el: d.body})}catch(er){console.log('==cB');cB()}
-	var saveLocStor = function(ev, val, do2){ var aaa,aab,aac,aad,aaae, t = ev && ev.target.form || document.documentElement || document.body;
+	var saveLocStor = function(ev, val, do2){ var aaa,aab,aac,aad,aae, t = ev && ev.target.form || document.documentElement || document.body;
 		xLocStor({do: do2 ||'set', key:'sett'
 			, val:{lang: (aaa=d.querySelectorAll('.lang', t))[aaa.length-1].value
 				,sites: ((aab=d.querySelectorAll('.sites', t))[aab.length-1].value||'').replace(/^[ \t]*|[ \n\t]*$/g,'')
@@ -612,7 +620,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 	,dwmyh: [1,1,1,1,1] //=array of numbers - current vals of days, weeks, months, years, hours
 	,fileType:{} // turn on or off {doc:1, txt:1}
 	,meta:{} // on/off {Ask:1, }
-	    //TODO meta-data for search of same results {Ya:{title:'',txt:'',url:''},...}
+		//TODO meta-data for search of same results {Ya:{title:'',txt:'',url:''},...}
 	,imgFile:'' // one of: switch to img search or in img search
 	,imgType:{} //{itp:'face'}
 	,imgColor:{} //{isc:'blue'}
