@@ -5,6 +5,7 @@
 Add buttons of customized search to start page and results page of Google.<br>
 *(Fx, Chrome, Opera12, Safari)*
 
+2022-08-21: Google Dark Theme support (in input field);<br>
 2018-12-11: White-Mint-Oval design (as default), blue old design as additional;<br>
 2018-12-05..11: start page with buttons is repaired; fix img search; hide buttons in shop|boks|finance;<br>
 2018-11-30..12-4: search by up to 30 filetypes; images search by types and Show Sizes checkbox;<br>
