@@ -3,7 +3,7 @@
 // @name:ru GoogleSearchExtraButtons
 // @description Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version 43.2022.8.22
+// @version 44.2022.8.23
 // @namespace   spmbt.github.com
 // @include http://www.google.*/search*
 // @include https://www.google.*/search*
@@ -176,8 +176,8 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 			'search in PDF files':'поиск по документам PDF'
 			,'search in':'искать по'
 			,'More':'Ещё'
-			,'show sizes':'показывать размеры'
-			,'hide sizes':'скрыть размеры'
+			,'search black/white':'искать чёрно-белые'
+			,'return to colored':'вернуться к цветным'
 			,'from / to':'за период'
 			,'past':['за последний','за последние','за последнюю']
 			,'day':'сутки'
@@ -201,8 +201,8 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 			'search in PDF files':'la recherche dans les fichiers PDF'
 			,'search in':'rechercher dans'
 			,'More':'Plus'
-			,'show sizes':'montrer les tailles'
-			,'hide sizes':'masquer les tailles'
+			,'search black/white':'trouver noir et blanc'
+			,'return to colored':'retour à la couleur'
 			,'from / to':'pour la période'
 			,'past':['le dernier','dans les derniers','dans les derniers']
 			,'day':'jour'
@@ -225,9 +225,9 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		},de:{
 			'search in PDF files':'Suche in PDF-Dateien'
 			,'search in':'Suche in'
-			,'show sizes':'Größen anzeigen'
 			,'More':'Mehr'
-			,'hide sizes':'Größen ausblenden'
+			,'search black/white':'schwarz und weiß finden'
+			,'return to colored':'zurück zur Farbe'
 			,'from / to':'im Zeitraum'
 			,'past':['letzte','letzte','letzte']
 			,'day':'Tag'
@@ -250,9 +250,9 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		},es:{
 			'search in PDF files':'búsqueda en archivos PDF'
 			,'search in':'busca en'
-			,'show sizes':'muestra los tamaños'
 			,'More':'Más'
-			,'hide sizes':'ocultar tamaños'
+			,'search black/white':'encontrar blanco y negro'
+			,'return to colored':'volver al color'
 			,'from / to':'para el período'
 			,'past':['el último','en los últimos','en los últimos']
 			,'day':'día'
@@ -377,47 +377,47 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 					sites.push($LSettings);
 				var mainPg = /\/search\?|&q=|#q=/.test(lh)
 					,inputSearch = dat
-					,layout1811 = $q('.Tg7LZd') || $q('button[aria-label="Google Search"]')
+					,layout1811 = $q('.Tg7LZd') || $q('button[aria-label="Google Search"]') || $q('button[jsname="Tg7LZd"]')
 					,design1612 = ($q('#_fZl') || $q('.sbico-c')) && !layout1811
 					,d16 = (design1612 || layout1811) && S.design1612
-					,imgSrch = /[?&]tbm=isch/.test(lh)
-					,imgTools = imgSrch && /[&?]tbs=[^&]*/.exec(lh) //'tbs' with all params
-					,isWHShown = imgTools && /[&?]tbs[^&]*?(=|,|%2C)imgo(:|%3A)1/i.exec(lh) // sizes are shown if images
+					,imSrch = /[?&]tbm=isch/.test(lh) // sizes are shown if images (outdated): /[&?]tbs[^&]*?(=|,|%2C)imgo(:|%3A)1/i
+					,imgTools = imSrch && /[&?]tbs=[^&]*/.exec(lh) //'tbs' with all params
+					,isBWShown = imgTools && /[&?]tbs[^&]*?(=|,|%2C)ic(:|%3A)gray/i.exec(lh) // Black-White Images search
 					,buttSearcStart = startPg && layout1811 && ($q('input[name="btnK"]') || $('input[aria-label="Google Search"]')) //for the start page
 					,buttSearch = d.getElementsByName('btnG') && d.getElementsByName('btnG')[0] || design1612 || layout1811
 				,buttS ={
 					Srch:{url:'', txt:'search'}
-					,PDF:{url:'filetype:PDF', txt:$L[imgSrch?(isWHShown ?'hide':'show') +' sizes':'search in PDF files']}
+					,PDF:{url:'filetype:PDF', txt:$L[imSrch?(isBWShown ?'hide':'show') +' sizes':'search in PDF files']}
 					,site:{url:'site:'+ S.sites[0], txt:$L['search in']+' '+ S.sites[0], one:'day'} //you may comment this line
 					//,'.. : ..':{url:'', txt:$L['from / to']}
 					,'1D':{url:'&tbs=qdr:d', txt:$L['past'][1] +' '+ $L['day'], one:'day', up:13,lett:'D'}
 					,'1W':{url:'&tbs=qdr:w', txt:$L['past'][2] +' '+ $L['week'], one:'week', up:14,lett:'W'}
 					,'1M':{url:'&tbs=qdr:m', txt:$L['past'][0] +' '+ $L['month'], one:'month', up:20,lett:'M'}
-					,'1Y':{url:'&tbs=qdr:y', txt:$L['past'][0] +' '+ $L['year'], one:'year', up:10,lett:'Y'}
+					,'1Y':{url:'&tbs=qdr:y', txt:$L['past'][0] +' '+ $L['year'], one:'year', up:15,lett:'Y'}
 					,'1H':{url:'&tbs=qdr:h', txt:$L['past'][0] +' '+ $L['hour'], one:'hour', up:23,lett:'H'}
 				}, ii = -1, iD = -1;
-				if((design1612 || layout1811) && !d16)
+				if((design1612 || layout1811) && !d16 && buttSearch && buttSearch.parentNode)
 					buttSearch.parentNode.className +=' lsbb';
 				!sites && delete buttS.site;
-				if(!layout1811){ buttSearch.parentNode.style.position ='relative';
+				if(!layout1811 && buttSearch && buttSearch.parentNode){ buttSearch.parentNode.style.position ='relative';
 					buttSearch.parentNode.style.zIndex ='1003';}
-				if(buttSearch && top == self) for(var i in buttS) if(i !='site'|| S.sites){ //buttons under search input line
+				if(buttSearch && top == self) for(var i in buttS) if(i=='site'&& !S.sites || !imSrch || i !='1H'){ //buttons under search input line
 					if(i.length ==2) iD++; else iD=-1;
 					var bI = buttS[i]
 						,Gesch = ({m:'letzter',f:'letzte',n:'letztes'})['m,f,m,n,f'.split(',')[iD]]
 						,hint = function(j){return (j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]) }
 						,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 || layout1811 ?{right: -a+33+'px'}
 							:{left: a+'px'}}
-						,isWHShown2 = isWHShown && i=='PDF'
+						,isBWShown2 = isBWShown && i=='PDF'
 						,butt2 = $e({clone: i =='site'|| i.length ==2 || i=='PDF'
 							? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
 							: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt ' +(d16 ?'xButt2':'lsb')}) : $e({cl: 'siteList hiddn'})
 						,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
-							,innerHTML: '<div'+ (d16 ?' class=xButt2':'') +'><s'+ (isWHShown2?'':'pan') +' class=txt onclick=this.parentNode.click();return!1 title="'
+							,innerHTML: '<div'+ (d16 ?' class=xButt2':'') +'><s'+ (isBWShown2?'':'pan') +' class=txt onclick=this.parentNode.click();return!1 title="'
 							+(lang || i=='site'|| i=='.. : ..'
-								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['past'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')
-							+'" itrvNum="'+ (i=='site'?'': bI.url + S.dwmyh[iD]) +'">'
-							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : imgSrch && i=='PDF' ?'WxH': i) +(isWHShown2?'/s>':'</span>')+'</div>'}
+								? ((iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['past'][1] +' '+ hint(S.dwmyh[iD]-1))||'').replace(/letzte/,Gesch) :'')
+							+'" itrvNum="'+ (i=='site'?'': bI.url + (imSrch?'': S.dwmyh[iD])) +'">'
+							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : imSrch && i=='PDF' ?'B/W': i) +(isBWShown2?'</s>':'</span>')+'</div>'}
 						,cs: $x({position:'absolute', top:startPg ?'40px':'33px',wordSpacing:'-1px',
 							visibility: ii < S.hiddenEdgeLeft || startPg && ii==2 ?'hidden':'visible'}, $x(csLeft(++ii),
 							ii===2 ? {width:'26px', marginRight:'3px', borderRadius:'2px', lineHeight:'0.75em', marginTop:'0.125em'}:{}))
@@ -435,18 +435,18 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									if(t.classList.contains('settIn')||t.parentNode.classList.contains('settIn')){ev.stopPropagation();return;}
 									if(t && t.className !='txt')
 										inputSearch.value = (inputSearch.value||'').replace(/( site(:|%3A)\s*\S*|$)/ig, /Srch|site/.test(i)?'':'$1').replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'')
-											+' '+ (/Srch|PDF|DOC/.test(i) ? imgSrch ?'': bI.url
+											+' '+ (/Srch|PDF|DOC/.test(i) ? imSrch ?'': bI.url
 											: 'site:'+ (t && (t.getAttribute('site')|| t.parentNode && t.parentNode.getAttribute('site'))||''));
 									if(t && (t.getAttribute('site') ==null && t.parentNode && t.parentNode.getAttribute('site') ==null && !/Srch|PDF|DOC/.test(i)))
 										return;
-									if(imgSrch && i=='PDF'){
+									if(imSrch && i=='PDF'){
 										ev.stopPropagation();
-										S.imgWHShown = !isWHShown; //TODO for going to link of Images Search
+										S.imgWHShown = !isBWShown; //TODO for going to link of Images Search
 										saveLocStor();
-										location.href = isWHShown ? lh.replace(new RegExp(imgTools[0]), imgTools[0]
-												.replace(/(,|%2C)?imgo(:|%3A)1/ig,'').replace(/([?&])tbs=?,?(&|$)/,'$1')) //hide sizes
-											: imgTools ? lh.replace(new RegExp(imgTools[0]), imgTools[0] + (imgTools[0].length <5 ?'':',') +'imgo:1') //upd.'Show'
-												: lh + (/\?/.test(lh) ?'&':'?') +'tbs=imgo:1'; //new Tools-More_tools_Show_sizes
+										location.href = isBWShown ? lh.replace(new RegExp(imgTools[0]), imgTools && imgTools[0]
+												.replace(/(,|%2C)?ic(:|%3A)gray/ig,'').replace(/([?&])tbs=?,?(&|$)/,'$1')) //return to colored
+											: imgTools ? imgTools && lh.replace(new RegExp(imgTools[0]), imgTools[0] + (imgTools[0].length <5 ?'':',') +'ic:gray') //upd.'Show'
+												: lh + (/\?/.test(lh) ?'&':'?') +'tbs=ic:gray'; //new Tools-More_tools_Show_sizes
 									}else if(t && /xButt|txt/.test(t.className) && !(i=='site'&& !(/list/.test(t.parentNode.className)
 										|| /list/.test(t.parentNode.parentNode.className))) || t && /Srch|PDF|DOC/.test(t.value))
 										/*console.log('==startSrch'),*/(buttSearcStart || buttSearch).click();
@@ -504,12 +504,12 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 					if(i =='site' || i.length ==2 || i =='PDF'){ //dropdown lists under some buttons
 						//TODO 'list selted' will be placed if search by filetype or by site was presented (and accordingly buttons will be with 'selted')
 						var siteList = $e({cl:'list',cs:{display:'none'}, apT: butt2}), arr =[];
-						for(var j =0; j <= bI.up -1 -(i=='1W'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0); j++)
+						for(var j =0; j < (imSrch ?1: bI.up -(i=='1W'&& S.lastHoursLess ?4:0) -(i=='1M'&& S.lastHoursLess ?9:0) -(i=='1Y'&& S.lastHoursLess ?5:0)); j++)
 							if(i !='1H' || !S.lastHoursLess || j < 8 || j % 2 )
 								arr.push(hint(j));
 						//console.log(S.sites,i, S.dwmyh);
-						var list = i=='site' ? sites||[] : i =='1D'&& !sites ? arr.concat([$LSettings])
-							: i=='PDF'? imgSrch ? imgFile : fileType : arr,
+						var list = i=='site' ? sites ||[] : i =='1D'&& !sites ? arr.concat([$LSettings])
+							: i=='PDF'? imSrch ? imgFile : fileType : arr,
 							fTMoreX2 =0;
 						for(var j in list) if(j !=0 || iD!=-1 && S.dwmyh[iD] !=1){
 							//console.log('==i,sI', i, sI);
@@ -558,7 +558,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 										,des16 = $q('#design1612') && !layout1811
 										,des18 = $q('#whiteMintOval')
 										,itrv = t.getAttribute('date')||t.parentNode.getAttribute('date')||''
-										,num = (t.getAttribute('site')||t.parentNode.getAttribute('site')||'').replace(/\D/g,'');
+										,num = (t.getAttribute('site')||t.parentNode.getAttribute('site')||'').replace(/site/.test(itrv)?/^/:/\D/g,'');
 									//console.log('==clic3:t,itrv,num,fTyp,pdf:',t, itrv, num,'|',fTyp,pdf);
 									if(t.classList.contains('sett')||t.parentNode.classList.contains('sett')){ev.stopPropagation();return;}
 									if(less && /hoursLess/.test(t.id)){
@@ -576,7 +576,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									if(pdf || /site/.test(itrv)) {//console.log('==pdf|site');
 										inputSearch.value = inputSearch.value.replace(new RegExp('(?:(\\s+OR\\s+)?\\s*'
 											+(pdf ?'filetype':'site')+'(?::|%3A)\\s*\\S*)+|$','g')
-											,s1 => fTMore || s1 ?'':' '+ (imgSrch? itrv.toLowerCase() : itrv +(pdf ?'': fTyp)));}
+											,s1 => fTMore || s1 ?'':' '+ (imSrch? itrv.toLowerCase() + num : itrv +(pdf ?'': fTyp)));}
 									var l2 = startPg ? lh.replace(/^([^/]*)\/\/([^/]+)\/?([^?#]*)([?#]?.*)/, '$1//$2/search$4') : lh // insert '/search?' instead any
 										,newSrch = /[?&]q=/.test(l2) ? l2.replace(/(&|\?)q=([^&]*)(&|$)/g,'$1q='+ encodeURIComponent(inputSearch.value) +'$3') //add value to '[?&]q=[^&]*'
 											: l2 + (/\?/.test(l2) ?'&':'?') +'q='+ encodeURIComponent(inputSearch.value); //set new value as &q=.+
@@ -586,8 +586,8 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									if(layout1811 && num !==''|| pdf) {pdf && ev.stopPropagation();
 										if(!fTMore) location.href = /qdr(:|%3A)([dwmyh])\d*/.test(l2)
 											? newSrch.replace(/([?&]tbs=)?qdr(:|%3A)[dwmyh]\d*/
-												,function(x){return pdf ?'': (itrv + num).replace(/&/, /\?/.test(x) ?'?':'&')}) //patch date in URL
-											: newSrch + (/\?/.test(newSrch) ?'&':'?') + (pdf ?'': itrv + num); //add date in URL
+												,function(x){return pdf ?'': (itrv + (imSrch?'': num)).replace(/&/, /\?/.test(x) ?'?':'&')}) //patch date in URL
+											: newSrch + (/\?/.test(newSrch) ?'&':'?') + (pdf ?'': itrv + (imSrch?'': num)); //add date in URL
 										else{if(t.classList.contains('txt')) {if(t.parentNode.classList.contains('more')) t.parentNode.className ='xButt lsb moreShow';
 											else t.parentNode.className ='xButt lsb more';} //'className' because bug of Chrome in upper line with .toggle
 												else {if(t.classList.contains('more')) t.className ='xButt lsb moreShow';
