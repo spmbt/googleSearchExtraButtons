@@ -3,7 +3,7 @@
 // @name:ru GoogleSearchExtraButtons
 // @description Add buttons (past 1/2/3 days, weeks, PDF search etc.) for Google search page
 // @description:ru Кнопки вариантов поиска для страницы поиска Google (1-2-3 дня, недели, PDF, ...)
-// @version 42.2022.8.21
+// @version 43.2022.8.22
 // @namespace   spmbt.github.com
 // @include http://www.google.*/search*
 // @include https://www.google.*/search*
@@ -273,6 +273,8 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 			,'Gray design of buttons':'Diseño gris de botones'
 			,'Sites':'Sitios'
 		}},cB; //if !lang, then no hints
+	var bBack = /^(?:rgba?\((\d+)|#(.))/.exec(window.getComputedStyle(d.body).backgroundColor.replace(/gb/,'gba')), // for Images tab
+		mDark = (d.querySelectorAll('meta[name="color-scheme"]')[0]||{}).content==='dark'|| bBack && (bBack[1] && bBack[1] <96 || bBack[2] && bBack[2] <6);
 	addRules('.hp .sfsbc,.sfsbc{display:inline-block}.siteList:hover button{display:block}'
 		+'.gb_Ib >.gb_e{height:47px}.gb_Fb{z-index:1087}.tsf-p{z-index:203}'
 		+'.lsbb .xButt,.lsbb >.siteList,.sbibod .xButt,.sbibod >.siteList   {z-index:2002; width:34px; height:17px;'
@@ -301,16 +303,16 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		+'.list .moreShow~.x2.xButt, .list .moreShow~.x2 ~.xButt{left:99px}'
 		+'.siteList .sett .txt{padding:2px 2px 4px; font-size:14px}'
 		+'.siteList .settIn{display:none; width:250px; padding:2px 4px; text-align:left; border:1px solid #48f; font-size:14px;'
-			+'background-color:#eef; color:#336}'
+			+'background-color:#dde; color:#336}'
 		+'.siteList .settIn hr{margin:2px 0}'
 		+'.sbibtd .sfsbc .nojsb, .siteList .sett:hover .settIn, .siteList .settIn.changed,'
 		+'.siteList .settIn.changed .reload{display:block}.siteList .settIn .reload, .siteList.hiddn{display:none}'
 		+'div.gb_g[aria-label="promo"],.pdp-psy.og-pdp, .gb_Sc.gb_g .gb_ha, .gb_g.gb_ha:not(.xpdopen ){display:none}'
 		+'.xpdopen{display:block!important}.rhsvw{opacity:.16; transition:.4s}.rhsvw:hover{opacity:1}'
 		+'.srp #sfdiv{overflow:inherit}' //hide promo
-		//+'.UUbT9 >div.aajZCb{background-color:rgba(255, 255, 255, 0.7);}' //opacity for suggests
-		+'.UUbT9 ul li div span b{background-color:rgba(99, 102, 114, 0.9); margin:0 -6px 0 -1px; padding:0 6px 0 1px}' //white under suggest texts
-		+'.gb_kb{padding-left:10px; padding-right:7px}form .RNNXgb{position:relative;' // background:rgba(255, 255, 255, 0.9)}'
+		+'.UUbT9 >div.aajZCb{background-color:rgba('+(mDark?'40,44,48, 0.92':'255,255,255, 0.75')+');}' //opacity for suggests
+		+'.UUbT9 ul li div span b{background-color:rgba('+(mDark?'88,93,99':'237,242,248')+', 0.9); margin:0 -6px 0 4px; padding:0 6px 0 0;border-radius:7px;}' //white under suggest texts
+		+'.gb_kb{padding-left:10px; padding-right:7px}form .RNNXgb{position:relative; background:rgba('+(mDark?'40,44,48':'255,255,255')+', 0.92)}'
 		+'.RNNXgb, #tsf{width:auto!important} #searchform form#tsf{max-width:auto} body div#searchform,body  .ctr-p{min-width:0}'
 		+'div#searchform.minidiv{top:-8px!important}.minidiv .sfbg{margin-top:-26px!important}' // for  narrow sticked searchbar
 		+'.minidiv .sfbg{top:-39px}.minidiv .sfbg +form#tsf{top:-39px}.minidiv .sfbg +form#tsf:hover{top:0}' //hide sticked
@@ -322,7 +324,6 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		+'.A8SBwf .logo +.RNNXgb .Tg7LZd   {visibility:visible; margin-right:-9px; margin-bottom:-2px; transition:margin 5s ease-in-out}');
 	//console.log('==cB-00');
 	try{xLocStor({do:'get', key:'sett', val:setts, cB: cB=function(prev,undef){
-		//console.log('==cB-0');
 		S = prev || setts;
 		S.dwmyh = S.dwmyh || setts.dwmyh; //temp. transitional expr.
 		S.hiddenEdgeLeft = setts.hiddenEdgeLeft;
@@ -335,15 +336,18 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 		+'.lsbb >.siteList >div:not([class]):hover span   {color:#aa6c1c}'
 		+'.lsbb >.siteList .sett .txt{background-color:#4889f1}'
 		//white-mint-oval design
-		:'.lsbb .xButt:not(.xButt2), .lsbb >.siteList   {text-align:center; background-color:rgb(240, 247, 248); opacity:0.75; color:rgb(137, 137, 137)}'
-		+'.lsbb >.siteList   {border:1px solid rgb(183, 219, 205); border-radius:10px; background-color:rgba(243, 243, 243, 0.69); color:rgb(75, 143, 231)}'
-		+'.lsbb >.siteList .lsb   {font-weight:normal; border:1px solid rgb(210, 210, 190); border-radius:10px; background-color:rgb(225, 239, 239); color:rgb(140, 140, 140)}'
+		:'.lsbb .xButt:not(.xButt2), .lsbb >.siteList   {text-align:center; background-color:rgb('
+			+(mDark?'92,100,110':'240,247,248')+'); opacity:0.75; color:rgb('+(mDark?'40,44,48':'137,137,137')+')}'
+		+'.lsbb >.siteList   {border:1px solid rgb('+(mDark?'87,97,108':'183,219,205')+'); border-radius:10px; background-color:rgba('
+			+(mDark?'86,89,92':'243,243,243')+',0.7); color:rgb('+(mDark?'140,154,173':'75,143,231')+')}'
+		+'.lsbb >.siteList .lsb   {font-weight:normal; border:1px solid rgb('+(mDark?'98,98,90':'210,210,190')
+			+'); border-radius:10px; background-color:rgb('+(mDark?'77,84,89':'225,239,239')+'); color:rgb(140, 140, 140)}'
 		+'.lsbb .lsb:hover   {opacity:1; color:rgb(152, 123, 43); cursor:default}'
-		+'.lsbb >.siteList:hover   {background-color:rgb(183, 219, 205)}'
+		+'.lsbb >.siteList:hover   {background-color:rgb('+(mDark?'87,97,108':'183,219,205')+')}'
 		+'.lsbb .xButt:hover   {background-color:rgb(221, 230, 228)}'
-		+'.lsbb >.siteList >div:not([class]):hover span   {color:rgb(170, 108, 28)}'
-		+'.lsbb >.siteList .sett .txt   {position:relative; top:2px; margin:0 -2px; padding:1px 3px;' +
-			'border:1px solid rgb(207, 207, 207); border-radius:10px; background-color:rgb(234, 237, 248)');
+		+'.lsbb >.siteList >div:not([class]):hover span   {color:rgb('+(mDark?'233,140,19':'170,108,28')+')}'
+		+'.lsbb >.siteList .sett .txt   {position:relative; top:2px; margin:0 -2px; padding:1px;' +
+			'border:1px solid rgb('+(mDark?'87,97,108':'183,219,205')+'); border-radius:10px; background-color:rgb('+(mDark?'92,100,110':'240,247,248')+')');
 		CS({t:120, i:12, m: 1.6
 			,c: function(){
 				return d && d.getElementsByName('q') && !/[?&]tbm=(shop|bks|fin)/.test(lh) && d.getElementsByName('q')[0];
@@ -381,11 +385,11 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 					,isWHShown = imgTools && /[&?]tbs[^&]*?(=|,|%2C)imgo(:|%3A)1/i.exec(lh) // sizes are shown if images
 					,buttSearcStart = startPg && layout1811 && ($q('input[name="btnK"]') || $('input[aria-label="Google Search"]')) //for the start page
 					,buttSearch = d.getElementsByName('btnG') && d.getElementsByName('btnG')[0] || design1612 || layout1811
-					,buttS ={
+				,buttS ={
 					Srch:{url:'', txt:'search'}
 					,PDF:{url:'filetype:PDF', txt:$L[imgSrch?(isWHShown ?'hide':'show') +' sizes':'search in PDF files']}
 					,site:{url:'site:'+ S.sites[0], txt:$L['search in']+' '+ S.sites[0], one:'day'} //you may comment this line
-					,'.. : ..':{url:'', txt:$L['from / to']}
+					//,'.. : ..':{url:'', txt:$L['from / to']}
 					,'1D':{url:'&tbs=qdr:d', txt:$L['past'][1] +' '+ $L['day'], one:'day', up:13,lett:'D'}
 					,'1W':{url:'&tbs=qdr:w', txt:$L['past'][2] +' '+ $L['week'], one:'week', up:14,lett:'W'}
 					,'1M':{url:'&tbs=qdr:m', txt:$L['past'][0] +' '+ $L['month'], one:'month', up:20,lett:'M'}
@@ -402,18 +406,21 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 					var bI = buttS[i]
 						,Gesch = ({m:'letzter',f:'letzte',n:'letztes'})['m,f,m,n,f'.split(',')[iD]]
 						,hint = function(j){return (j+1) +' '+ (j % 10 || j==10 ? $L[bI.one +'s'][j % 10 <4 && (j/10|0)!=1 ?0:1] : $L[bI.one]) }
-						,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 || layout1811 ?{right: -a+33+'px'}:{left: a+'px'}}
+						,csLeft = function(ii,a){a = -127 + 37 * (ii-1 - (ii >2 && !mainPg)); return design1612 || layout1811 ?{right: -a+33+'px'}
+							:{left: a+'px'}}
 						,isWHShown2 = isWHShown && i=='PDF'
 						,butt2 = $e({clone: i =='site'|| i.length ==2 || i=='PDF'
-						? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
-						: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt ' +(d16 ?'xButt2':'lsb')}) : $e({cl: 'siteList hiddn'})
+							? $e({cl: 'siteList', cs: {cursor:'default'}, at: {site: S.sites[0], date: bI.url} })
+							: i !='.. : ..'|| mainPg ? $e({el:'button', cl: 'xButt ' +(d16 ?'xButt2':'lsb')}) : $e({cl: 'siteList hiddn'})
 						,at: {value: iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : i
 							,innerHTML: '<div'+ (d16 ?' class=xButt2':'') +'><s'+ (isWHShown2?'':'pan') +' class=txt onclick=this.parentNode.click();return!1 title="'
 							+(lang || i=='site'|| i=='.. : ..'
 								? (iD==-1 || S.dwmyh[iD]==1 ? bI.txt : $L['past'][1] +' '+ hint(S.dwmyh[iD]-1)).replace(/letzte/,Gesch) :'')
 							+'" itrvNum="'+ (i=='site'?'': bI.url + S.dwmyh[iD]) +'">'
 							+(iD !=-1 && S.dwmyh[iD] !=1 ? S.dwmyh[iD] + bI.lett : imgSrch && i=='PDF' ?'WxH': i) +(isWHShown2?'/s>':'</span>')+'</div>'}
-						,cs: $x({position:'absolute', top:startPg ?'40px':'33px',wordSpacing:'-1px', visibility: ii < S.hiddenEdgeLeft || startPg && ii==2 ?'hidden':'visible'}, csLeft(++ii))
+						,cs: $x({position:'absolute', top:startPg ?'40px':'33px',wordSpacing:'-1px',
+							visibility: ii < S.hiddenEdgeLeft || startPg && ii==2 ?'hidden':'visible'}, $x(csLeft(++ii),
+							ii===2 ? {width:'26px', marginRight:'3px', borderRadius:'2px', lineHeight:'0.75em', marginTop:'0.125em'}:{}))
 						,on: {click: (function(bI, i, iD){
 							//console.log('clic0:', i, iD);
 							return /Srch|PDF|DOC|site/.test(i)
@@ -425,9 +432,10 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 										saveLocStor('','','remove'); $pd(ev);
 									if(t && (t.getAttribute('site')==$LSettings || t.parentNode && t.parentNode.getAttribute('site')==$LSettings)
 										&& !/Srch|PDF|DOC/.test(i)) return;
+									if(t.classList.contains('settIn')||t.parentNode.classList.contains('settIn')){ev.stopPropagation();return;}
 									if(t && t.className !='txt')
-									inputSearch.value = (inputSearch.value||'').replace(/( site(:|%3A)\s*\S*|$)/ig, /Srch|site/.test(i)?'':'$1').replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'')
-										+' '+ (/Srch|PDF|DOC/.test(i) ? imgSrch ?'': bI.url
+										inputSearch.value = (inputSearch.value||'').replace(/( site(:|%3A)\s*\S*|$)/ig, /Srch|site/.test(i)?'':'$1').replace(/( |\+|&as_)filetype(:|%3A)[^\&]*/g,'')
+											+' '+ (/Srch|PDF|DOC/.test(i) ? imgSrch ?'': bI.url
 											: 'site:'+ (t && (t.getAttribute('site')|| t.parentNode && t.parentNode.getAttribute('site'))||''));
 									if(t && (t.getAttribute('site') ==null && t.parentNode && t.parentNode.getAttribute('site') ==null && !/Srch|PDF|DOC/.test(i)))
 										return;
@@ -442,7 +450,7 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									}else if(t && /xButt|txt/.test(t.className) && !(i=='site'&& !(/list/.test(t.parentNode.className)
 										|| /list/.test(t.parentNode.parentNode.className))) || t && /Srch|PDF|DOC/.test(t.value))
 										/*console.log('==startSrch'),*/(buttSearcStart || buttSearch).click();
-								}: !bI.url ? function(ev){ //from-to date
+								}: !bI.url ? function(ev){ //from-to date (! not used now)
 										var el = $q('#cdrlnk'), o;
 										el && el.dispatchEvent(((o = d.createEvent('Events')).initEvent('click', !0, !1), o));
 										$pd(ev);
@@ -545,13 +553,14 @@ if(location.host == xLocSto[xLocStI].origin.replace(/[^/]*\/\//,'')){
 									,height: sI != $LSettings ?'18px':'16px',margin:'2px 0 -1px -13px', padding:'0 2px 0 1px', minWidth:'42px'
 									,top: (19* j - 175 - 133* fTMoreX2) +'px'
 									,textAlign:'left', fontWeight:'normal', opacity:1, whiteSpace:'nowrap'}, fTMore ?{top:'18px',left:'47px'}:{})
-								,on:{click: (function(fTyp,pdf,fTMore){return function(ev){
+								,on:{click: (function(fTyp,pdf,fTMore){return function(ev){var t = ev.target;
 									var less = $q('#hoursLess')
-										,des16 = $q('#design1612') && !layout1811, t = ev.target
+										,des16 = $q('#design1612') && !layout1811
 										,des18 = $q('#whiteMintOval')
 										,itrv = t.getAttribute('date')||t.parentNode.getAttribute('date')||''
 										,num = (t.getAttribute('site')||t.parentNode.getAttribute('site')||'').replace(/\D/g,'');
 									//console.log('==clic3:t,itrv,num,fTyp,pdf:',t, itrv, num,'|',fTyp,pdf);
+									if(t.classList.contains('sett')||t.parentNode.classList.contains('sett')){ev.stopPropagation();return;}
 									if(less && /hoursLess/.test(t.id)){
 										less.outerHTML = '<input type="checkbox" class="less" id="hoursLess"'
 											+(less.getAttribute('checked')!=null ?'':' checked="checked"')+'/>';
