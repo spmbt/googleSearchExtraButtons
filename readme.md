@@ -43,6 +43,8 @@ Script adds 8 types of buttons that doubled links hidden in:
 * remove lang in settings for no hints (interface language will be English).
 * save settings (language and sites list) in the external localStorage (google clean own storage), copy list as text.
 * keep type of current page ('tbm=' parameter) - news, pictures, video etc.
+* hide first button (File Types in search) in Settings
+* hide second button ("site") if you clean sites list and change any another setting (formally for save)
 
 This script is based on [BarsMonster article (ru)](http://habrahabr.ru/post/179367/) .
 
