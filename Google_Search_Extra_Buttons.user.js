@@ -13,6 +13,7 @@
 // @include https://spmbt.github.io/googleSearchExtraButtons/saveYourLocalStorage.html
 // @include https://www.gstatic.com/sites/p/b9356d/system/services/test.html
 // @include https://www.gstatic.com/index.html
+// @exclude https://www.google.com/maps/*
 // ==/UserScript==
 var xLocStI =0, xLocSto = [{origin:'https://spmbt.github.io', restHref:'/googleSearchExtraButtons/saveYourLocalStorage.html'},
 	{origin:'https://www.gstatic.com', restHref:'/sites/p/b9356d/system/services/test.html', '//':'blank page'},
